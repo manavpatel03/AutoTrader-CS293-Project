@@ -7,42 +7,71 @@ class AutoTrader
 public:
     AutoTrader() {}
 
-    std::string processOrder(const std::string &stock_name, const bool &action, int &price)
+    std::string processOrder(const std::string &stock_name, const bool &action, int &price, Map data)
     {
         // Parse the input order
-
-        int index = find(stock_name);
-
-        if (index == -1 && action == false)
+        if (data.check(stock_name))
         {
-            // First trade, always execute the order
-            last_trade_price.push_back({stock_name, price});
-            return stock_name + " " + std::to_string(price) + " " + "s";
-        }
-        else if (index == -1 && action == true)
-        {
-            // First trade, always execute the order
-            last_trade_price.push_back({stock_name, price});
-            return stock_name + " " + std::to_string(price) + " " + "b";
-        }
-        else
-        {
-            if (action == false && price > last_trade_price[index].second)
+            vector<int> vals = data.search(stock_name);
+            int opp_buffer_index = 1 + int(action);
+            int self_buffer_index = 1 + int(!action);
+            int estimate = vals[0];
+            if (vals[opp_buffer_index] == price)
             {
-                // Buy when the price is lower than the last traded price
-                last_trade_price[index].second = price;
-                return stock_name + " " + std::to_string(price) + " s";
+                // this is to cancel both the buffer out
+                if (action)
+                {
+                    vals[opp_buffer_index] = INT32_MAX;
+                }
+                else
+                    vals[opp_buffer_index] = INT32_MIN;
+                data.insert(stock_name, vals);
+                return "No Trade";
             }
-            else if (action == true && price < last_trade_price[index].second)
+            // level 1 check, dry run for correctness check
+            if (action)
             {
-                // Sell when the price is higher than the last traded price
-                last_trade_price[index].second = price;
-                return stock_name + " " + std::to_string(price) + " b";
+                if (vals[self_buffer_index] > price)
+                    return "No Trade";
+            }
+            else
+            {
+                if (vals[self_buffer_index] < price)
+                    return "No Trade";
+            }
+            if (action)
+            {
+                if (estimate < price)
+                {
+                    vals[self_buffer_index] = INT32_MAX;
+                    vals[0] = price;
+                    data.insert(stock_name, vals);
+                    return stock_name + " " + std::to_string(price) + " s";
+                }
+                else
+                {
+                    vals[self_buffer_index] = price;
+                    data.insert(stock_name, vals);
+                    return "No Trade";
+                }
+            }
+            else
+            {
+                if (estimate > price)
+                {
+                    vals[0] = price;
+                    vals[self_buffer_index] = INT32_MIN;
+                    data.insert(stock_name, vals);
+                    return stock_name + " " + std::to_string(price) + " b";
+                }
+                else
+                {
+                    vals[self_buffer_index] = price;
+                    data.insert(stock_name, vals);
+                    return "No Trade";
+                }
             }
         }
-
-        // If no trade is executed, return "No Trade"
-        return "No Trade";
     }
 
 private:
@@ -119,10 +148,11 @@ int main(int argc, char **argv)
             }
             i++;
             int price = stoi(price_holder);
-            bool buy = true; // for us i.e if we want to buy then true else false
-            if (message[i] == 'b')
+            bool buy = true; // for us i.e if they want to buy then true else false
+            if (message[i] == 's')
                 buy = false;
-            std::string me = at.processOrder(cmpny, buy, price);
+            // at this point all the 3 values are with us
+            std::string me = at.processOrder(cmpny, buy, price, data);
             std::cout << me << std::endl;
             i += 3;
         }

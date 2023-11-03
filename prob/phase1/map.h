@@ -73,15 +73,6 @@ private:
 	// we have to assure the compiler that
 	// method called(i.e "search") inside it
 	// doesn't change the attributes of class
-	vector<int> search(std::string first) const
-	{
-		const Map *temp = iterator(first);
-		if (temp != nullptr)
-		{
-			return temp->second;
-		}
-		return vector<int>();
-	}
 
 	// Utility function to return the Map* object
 	// with its members initialized
@@ -92,8 +83,8 @@ private:
 		newnode->first = first;
 		newnode->second = vector<int>(3);
 		newnode->second[0] = -1;		// estimate
-		newnode->second[1] = INT32_MAX; // sell estimate i.e. the customer wants to sell
-		newnode->second[2] = INT32_MIN; // buy estimate i.e. the customer wants to buy
+		newnode->second[1] = INT32_MIN; // buy buffer i.e. the customer wants to buy
+		newnode->second[2] = INT32_MAX; // sell buffer i.e. the customer wants to sell
 		newnode->left = nullptr;
 		newnode->right = nullptr;
 		newnode->par = nullptr;
@@ -568,6 +559,15 @@ public:
 	}
 
 	// Returns if the map is empty or not
+	vector<int> search(std::string first) const
+	{
+		const Map *temp = iterator(first);
+		if (temp != nullptr)
+		{
+			return temp->second;
+		}
+		return vector<int>();
+	}
 	bool empty(void)
 	{
 		if (root == nullptr)
@@ -577,6 +577,12 @@ public:
 
 	// Given the key of an element it updates
 	// the value of the key
+	bool check(std::string first)
+	{
+		if (iterator(first) == nullptr)
+			return 0;
+		return 1;
+	}
 	void update(std::string first, vector<int> second)
 	{
 		Map *temp = iterator(first);

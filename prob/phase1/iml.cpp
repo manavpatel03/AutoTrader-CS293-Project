@@ -9,15 +9,17 @@
 #include <netinet/in.h>
 #include <fstream>
 
-const int PORT = 8889;
+const int PORT = 8888;
 const int BUFFER_SIZE = 1024;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     std::string filepath = argv[1];
 
     // Create a socket
     int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (clientSocket == -1) {
+    if (clientSocket == -1)
+    {
         std::cerr << "Error creating socket." << std::endl;
         return 1;
     }
@@ -28,7 +30,8 @@ int main(int argc, char **argv) {
     serverAddress.sin_port = htons(PORT);
     serverAddress.sin_addr.s_addr = INADDR_ANY;
 
-    if (connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
+    if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
+    {
         std::cerr << "Error connecting to receiver." << std::endl;
         close(clientSocket);
         return 1;
@@ -36,28 +39,30 @@ int main(int argc, char **argv) {
 
     std::cout << "Connected to the receiver." << std::endl;
 
-    std::ifstream inputFile(filepath); 
+    std::ifstream inputFile(filepath);
 
     char buffer[BUFFER_SIZE];
     int bytesSent;
     std::string message;
 
-    while(std::getline(inputFile, message)) {
+    while (std::getline(inputFile, message))
+    {
         // Send the message to the receiver
         bytesSent = send(clientSocket, message.c_str(), message.length(), 0);
-        if (bytesSent == -1) {
+        if (bytesSent == -1)
+        {
             std::cerr << "Error sending data to receiver." << std::endl;
             close(clientSocket);
             return 1;
         }
-        
     }
 
     message = "$";
 
     // Send the message to the receiver
     bytesSent = send(clientSocket, message.c_str(), message.length(), 0);
-    if (bytesSent == -1) {
+    if (bytesSent == -1)
+    {
         std::cerr << "Error sending data to receiver." << std::endl;
         close(clientSocket);
         return 1;
