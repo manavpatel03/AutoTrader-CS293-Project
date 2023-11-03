@@ -10,9 +10,9 @@ public:
     std::string processOrder(const std::string &stock_name, const bool &action, int &price)
     {
         // Parse the input order
-        
+
         int index = find(stock_name);
-      
+
         if (index == -1 && action == false)
         {
             // First trade, always execute the order
@@ -50,13 +50,13 @@ private:
 
     int find(const std::string &key) const
     {
-        int k=-1;
+        int k = -1;
         for (int i = 0; i < last_trade_price.size(); ++i)
         {
-            
+
             if (last_trade_price[i].first.compare(key) == 0)
             {
-                k=i;
+                k = i;
                 break;
             }
         }
@@ -99,8 +99,9 @@ int main(int argc, char **argv)
     char which = argv[1][0];
     if (which == '1')
     {
-        AutoTrader at;  // Move this line here
+        AutoTrader at; // Move this line here
         int i = 0;
+        Map data;
         while (i < message.length())
         {
             std::string cmpny = "";
@@ -121,11 +122,9 @@ int main(int argc, char **argv)
             bool buy = true; // for us i.e if we want to buy then true else false
             if (message[i] == 'b')
                 buy = false;
-            std::string me=at.processOrder(cmpny,buy,price);
+            std::string me = at.processOrder(cmpny, buy, price);
             std::cout << me << std::endl;
             i += 3;
         }
-          
     }
 }
-
