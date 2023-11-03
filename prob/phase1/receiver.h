@@ -10,11 +10,9 @@
 #include <sstream>
 #include <unistd.h>
 
-
-
 class Receiver
 {
-    const int PORT = 8888;
+    const int PORT = 8889;
     const static int BUFFER_SIZE = 1024;
 
     int serverSocket, clientSocket;
@@ -23,12 +21,13 @@ class Receiver
     char buffer[BUFFER_SIZE];
     int bytesRead;
 
-    public:
+public:
     Receiver()
     {
         // Create a Socket
         serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-        if (serverSocket == -1) {
+        if (serverSocket == -1)
+        {
             std::cerr << "Error creating socket." << std::endl;
         }
 
@@ -37,14 +36,15 @@ class Receiver
         serverAddress.sin_addr.s_addr = INADDR_ANY;
         serverAddress.sin_port = htons(PORT);
 
-
-        if (bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
+        if (bind(serverSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
+        {
             std::cerr << "Error binding socket." << std::endl;
             close(serverSocket);
         }
 
         // Listen for incoming connections
-        if (listen(serverSocket, 1) == -1) {
+        if (listen(serverSocket, 1) == -1)
+        {
             std::cerr << "Error listening." << std::endl;
             close(serverSocket);
         }
@@ -52,20 +52,21 @@ class Receiver
         std::cout << "Receiver is listening on port " << PORT << std::endl;
 
         clientAddrLength = sizeof(clientAddress);
-        clientSocket = accept(serverSocket, (struct sockaddr*)&clientAddress, &clientAddrLength);
-        if (clientSocket == -1) {
+        clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddrLength);
+        if (clientSocket == -1)
+        {
             std::cerr << "Error accepting connection." << std::endl;
             close(serverSocket);
         }
     }
-
 
     std::string readIML()
     {
         // Receive data from the sender
         usleep(1000);
         bytesRead = recv(clientSocket, buffer, BUFFER_SIZE - 1, 0);
-        if (bytesRead == -1) {
+        if (bytesRead == -1)
+        {
             std::cerr << "Error receiving data from sender." << std::endl;
             close(clientSocket);
             close(serverSocket);
@@ -76,7 +77,6 @@ class Receiver
         std::string message = buffer;
         return message;
     }
-
 
     void terminate()
     {
