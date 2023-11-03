@@ -1,6 +1,7 @@
 #include "receiver.h"
 #include <vector>
-
+#include <string>
+#include "map.h"
 class AutoTrader
 {
 public:
@@ -9,15 +10,16 @@ public:
     std::string processOrder(const std::string &stock_name, const bool &action, int &price)
     {
         // Parse the input order
-
+        
         int index = find(stock_name);
-        if (index == -1 && action == 0)
+      
+        if (index == -1 && action == false)
         {
             // First trade, always execute the order
             last_trade_price.push_back({stock_name, price});
             return stock_name + " " + std::to_string(price) + " " + "s";
         }
-        else if (index == -1 && action == 1)
+        else if (index == -1 && action == true)
         {
             // First trade, always execute the order
             last_trade_price.push_back({stock_name, price});
@@ -25,13 +27,13 @@ public:
         }
         else
         {
-            if (action == 0 && price > last_trade_price[index].second)
+            if (action == false && price > last_trade_price[index].second)
             {
                 // Buy when the price is lower than the last traded price
                 last_trade_price[index].second = price;
                 return stock_name + " " + std::to_string(price) + " s";
             }
-            else if (action == 1 && price < last_trade_price[index].second)
+            else if (action == true && price < last_trade_price[index].second)
             {
                 // Sell when the price is higher than the last traded price
                 last_trade_price[index].second = price;
@@ -48,14 +50,17 @@ private:
 
     int find(const std::string &key) const
     {
+        int k=-1;
         for (int i = 0; i < last_trade_price.size(); ++i)
         {
-            if (last_trade_price[i].first == key)
+            
+            if (last_trade_price[i].first.compare(key) == 0)
             {
-                return i;
+                k=i;
+                break;
             }
         }
-        return -1;
+        return k;
     }
 
     // std::vector<std::string> split(const std::string &input, char delimiter)
@@ -83,9 +88,6 @@ int main(int argc, char **argv)
     Receiver rcv;
     sleep(5);
     std::string message = rcv.readIML();
-    // std::cout << "cmpny";
-    // std::cout << message.length();
-    // return 0;
     if (argc < 2 ||
         (argv[1][0] != '1' && argv[1][0] != '2' && argv[1][0] != '3'))
     {
@@ -93,11 +95,11 @@ int main(int argc, char **argv)
                      " 1 for testing part2 \n"
                      " 2 for testing part3 \n"
                   << std::endl;
-        // return 1;
     }
     char which = argv[1][0];
     if (which == '1')
     {
+        AutoTrader at;  // Move this line here
         int i = 0;
         while (i < message.length())
         {
@@ -119,10 +121,11 @@ int main(int argc, char **argv)
             bool buy = true; // for us i.e if we want to buy then true else false
             if (message[i] == 'b')
                 buy = false;
-            AutoTrader at;
-            std::cout << buy << std::endl;
+            std::string me=at.processOrder(cmpny,buy,price);
+            std::cout << me << std::endl;
             i += 3;
         }
-        //  std::cout << "asd";
+          
     }
 }
+
