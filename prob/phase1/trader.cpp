@@ -151,7 +151,12 @@ int main(int argc, char **argv)
             if (message.find("$") != std::string::npos)
                 buffer_size_check = false;
             int i = 0;
-            while (i < message.length())
+            // std::cout << message << "eeeeeeeeeeeeeeeeeee";
+            while (message[i] == '#' && message[i] == '\n')
+                i++;
+            std::cout << message[i]
+                      << std::endl;
+            while (i < message.length() && message[i] != '$')
             {
                 std::string cmpny = "";
                 while (message[i] != 32)
