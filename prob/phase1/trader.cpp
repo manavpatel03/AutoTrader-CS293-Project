@@ -144,33 +144,38 @@ int main(int argc, char **argv)
     {
         AutoTrader at;
         Map data;
-
-        std::string message = rcv.readIML();
-        int i = 0;
-        while (i < message.length())
+        bool buffer_size_check = true;
+        while (buffer_size_check)
         {
-            std::string cmpny = "";
-            while (message[i] != 32)
+            std::string message = rcv.readIML();
+            if (message.find("$") != std::string::npos)
+                buffer_size_check = false;
+            int i = 0;
+            while (i < message.length())
             {
-                cmpny.push_back(message[i]);
+                std::string cmpny = "";
+                while (message[i] != 32)
+                {
+                    cmpny.push_back(message[i]);
+                    i++;
+                }
                 i++;
-            }
-            i++;
-            std::string price_holder = "";
-            while (message[i] != 32)
-            {
-                price_holder.push_back(message[i]);
+                std::string price_holder = "";
+                while (message[i] != 32)
+                {
+                    price_holder.push_back(message[i]);
+                    i++;
+                }
                 i++;
+                int price = stoi(price_holder);
+                bool buy = true; // for us i.e if they want to buy then true else false
+                if (message[i] == 's')
+                    buy = false;
+                // at this point all the 3 values are with us
+                std::string me = at.processOrder(cmpny, buy, price, data);
+                std::cout << me << std::endl;
+                i += 3;
             }
-            i++;
-            int price = stoi(price_holder);
-            bool buy = true; // for us i.e if they want to buy then true else false
-            if (message[i] == 's')
-                buy = false;
-            // at this point all the 3 values are with us
-            std::string me = at.processOrder(cmpny, buy, price, data);
-            std::cout << me << std::endl;
-            i += 3;
         }
     }
 
