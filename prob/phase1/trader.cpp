@@ -10,66 +10,73 @@ public:
     std::string processOrder(const std::string &stock_name, const bool &action, int &price, Map data)
     {
         // Parse the input order
+        vector<int> vals(3);
         if (data.check(stock_name))
         {
-            vector<int> vals = data.search(stock_name);
-            int opp_buffer_index = 1 + int(action);
-            int self_buffer_index = 1 + int(!action);
-            int estimate = vals[0];
-            if (vals[opp_buffer_index] == price)
+            vals = data.search(stock_name);
+        }
+        else
+        {
+            vals[0] = -1;        // estimate
+            vals[1] = INT32_MIN; // buy buffer i.e. the customer wants to buy
+            vals[2] = INT32_MAX; // sell buffer i.e. the customer wants to sell
+        }
+        int opp_buffer_index = 1 + int(action);
+        int self_buffer_index = 1 + int(!action);
+        int estimate = vals[0];
+        if (vals[opp_buffer_index] == price)
+        {
+            // this is to cancel both the buffer out
+            if (action)
             {
-                // this is to cancel both the buffer out
-                if (action)
-                {
-                    vals[opp_buffer_index] = INT32_MAX;
-                }
-                else
-                    vals[opp_buffer_index] = INT32_MIN;
+                vals[opp_buffer_index] = INT32_MAX;
+            }
+            else
+                vals[opp_buffer_index] = INT32_MIN;
+            data.insert(stock_name, vals);
+            return "No Trade";
+        }
+        // level 1 check, dry run for correctness check
+        if (action)
+        {
+            if (vals[self_buffer_index] > price)
+                return "No Trade";
+        }
+        else
+        {
+            if (vals[self_buffer_index] < price)
+                return "No Trade";
+        }
+        if (action)
+        {
+            if (estimate < price)
+            {
+                vals[self_buffer_index] = INT32_MAX;
+                vals[0] = price;
+                data.insert(stock_name, vals);
+                return stock_name + " " + std::to_string(price) + " s";
+            }
+            else
+            {
+                vals[self_buffer_index] = price;
                 data.insert(stock_name, vals);
                 return "No Trade";
             }
-            // level 1 check, dry run for correctness check
-            if (action)
+        }
+        else
+        {
+            if (estimate > price)
             {
-                if (vals[self_buffer_index] > price)
-                    return "No Trade";
+                vals[0] = price;
+                vals[self_buffer_index] = INT32_MIN;
+                data.insert(stock_name, vals);
+                return stock_name + " " + std::to_string(price) + " b";
             }
             else
             {
-                if (vals[self_buffer_index] < price)
-                    return "No Trade";
-            }
-            if (action)
-            {
-                if (estimate < price)
-                {
-                    vals[self_buffer_index] = INT32_MAX;
-                    vals[0] = price;
-                    data.insert(stock_name, vals);
-                    return stock_name + " " + std::to_string(price) + " s";
-                }
-                else
-                {
-                    vals[self_buffer_index] = price;
-                    data.insert(stock_name, vals);
-                    return "No Trade";
-                }
-            }
-            else
-            {
-                if (estimate > price)
-                {
-                    vals[0] = price;
-                    vals[self_buffer_index] = INT32_MIN;
-                    data.insert(stock_name, vals);
-                    return stock_name + " " + std::to_string(price) + " b";
-                }
-                else
-                {
-                    vals[self_buffer_index] = price;
-                    data.insert(stock_name, vals);
-                    return "No Trade";
-                }
+                vals[self_buffer_index] = price;
+                data.insert(stock_name, vals);
+                return "No Trade";
             }
         }
     }
@@ -115,10 +122,10 @@ private:
 int main(int argc, char **argv)
 {
     Receiver rcv;
-    sleep(5);
-    std::string message = rcv.readIML();
-    if (argc < 2 ||
-        (argv[1][0] != '1' && argv[1][0] != '2' && argv[1][0] != '3'))
+    bool dlr = false;
+    // if (argc < 2 ||
+    // std::cout << message << std::endl;
+    if (argv[1][0] != '1' && argv[1][0] != '2' && argv[1][0] != '3')
     {
         std::cout << "Give mode of operation:\n 0 for part 1 \n"
                      " 1 for testing part2 \n"
@@ -128,9 +135,10 @@ int main(int argc, char **argv)
     char which = argv[1][0];
     if (which == '1')
     {
-        AutoTrader at; // Move this line here
-        int i = 0;
+        AutoTrader at;
         Map data;
+        std::string message = rcv.readIML();
+        int i = 0;
         while (i < message.length())
         {
             std::string cmpny = "";
@@ -157,4 +165,6 @@ int main(int argc, char **argv)
             i += 3;
         }
     }
+
+    // AutoTrader at; // Move this line here
 }

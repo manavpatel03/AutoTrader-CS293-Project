@@ -1,13 +1,13 @@
-Receiver is listening on port 8888
-
-
-
-
-
-
-
-
-
-
-
-
+Receiver is listening on port 8887
+No Trade
+ASML 645 s
+AAPL 430 s
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
+No Trade
