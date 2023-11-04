@@ -17,16 +17,31 @@ public:
         }
         else
         {
-            if(action){
-                vals[0]=INT32_MIN;
+            if (action)
+            {
+                vals[0] = INT32_MIN;
             }
-            else{vals[0]=INT32_MAX;}       // estimate
+            else
+            {
+                vals[0] = INT32_MAX;
+            }                    // estimate
             vals[1] = INT32_MIN; // buy buffer i.e. the customer wants to buy
             vals[2] = INT32_MAX; // sell buffer i.e. the customer wants to sell
         }
         int opp_buffer_index = 1 + int(action);
         int self_buffer_index = 1 + int(!action);
         int estimate = vals[0];
+        // level 1 check, dry run for correctness check
+        if (action)
+        {
+            if (vals[self_buffer_index] >= price)
+                return "No Trade";
+        }
+        else
+        {
+            if (vals[self_buffer_index] <= price)
+                return "No Trade";
+        }
         if (vals[opp_buffer_index] == price)
         {
             // this is to cancel both the buffer out
@@ -38,17 +53,6 @@ public:
                 vals[opp_buffer_index] = INT32_MIN;
             data.insert(stock_name, vals);
             return "No Trade";
-        }
-        // level 1 check, dry run for correctness check
-        if (action)
-        {
-            if (vals[self_buffer_index] > price)
-                return "No Trade";
-        }
-        else
-        {
-            if (vals[self_buffer_index] < price)
-                return "No Trade";
         }
         if (action)
         {
@@ -140,7 +144,7 @@ int main(int argc, char **argv)
     {
         AutoTrader at;
         Map data;
-      
+
         std::string message = rcv.readIML();
         int i = 0;
         while (i < message.length())

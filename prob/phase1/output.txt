@@ -1,12 +1,8 @@
 Receiver is listening on port 8887
-ASML 650 b
-No Trade
-AAPL 430 s
-AAPL 435 s
-No Trade
-No Trade
-No Trade
-ASML 651 s
-AAPL 432 b
+A 40 b2147483647
+A 30 b2147483647
+No Trade40
+No Trade30
+A 70 s
 No Trade
 No Trade
