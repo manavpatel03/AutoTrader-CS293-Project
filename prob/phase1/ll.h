@@ -9,17 +9,37 @@ class Node
 public:
     int price;
     vector<int> validity;
-    Map2 store;
+    Map2 *store;
     Node *next;
 
     // Default constructor
-    Node() : price(0), validity(vector<int>()), store(Map2()), next(NULL) {}
+    Node()
+    {
+        price = 0;
+        validity = vector<int>();
+        next = nullptr;
+        // store = Map2();
+    }
 
     // Parameterized constructor
-    Node(int price, vector<int> validity, Map2 store) : price(price), validity(validity), store(store), next(NULL) {}
+    Node(int pri, vector<int> validy, Map2 ste)
+    {
+        price = pri;
+        validity = vector<int>(validy);
+        next = NULL;
+        store = ste.copy(&ste);
+        // store->inorderTraversal();
+        // ste.inorderTraversal();
+    }
 
     // Copy constructor
-    Node(const Node &node) : price(node.price), validity(node.validity), store(node.store), next(NULL) {}
+    Node(const Node &node)
+    {
+        price = node.price;
+        validity = vector<int>(node.validity);
+        next = NULL;
+        store = node.store->copy(node.store);
+    }
 };
 
 class LinkedList
@@ -83,6 +103,8 @@ public:
     void Display()
     {
         Node *itr = head;
+        if (head == nullptr && tail == nullptr)
+            cout << "bhai null hia";
         while (itr != tail && itr != NULL)
         {
             cout << "-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-" << endl;
@@ -92,34 +114,45 @@ public:
             {
                 cout << itr->validity[i] << " ";
             }
+            if (tail != NULL)
+            {
+                cout << "-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-" << endl;
+                cout << "Price is : " << tail->price << endl;
+                cout << "Here are the validity vectors : ";
+                for (int i = 0; i < tail->validity.size(); i++)
+                {
+                    cout << tail->validity[i] << " ";
+                }
+            }
             cout << endl;
-            itr->store.inorderTraversal();
+            itr->store->inorderTraversal();
         }
     }
     void addtoLC(Map2 Store, int price, int ind)
     {
-        cout << "fsfsdfdfsdfsd" << endl;
         Node *starter = head;
         Node *stopper = tail;
-        // cout << "fsfsdfdfsdfsd" << endl;
-        // assert(ind == -133);
-        while (starter != stopper)
+        cout << "fsfsdfdfsdfsd" << endl;
+        // assert(starter != stopper);
+        while (starter != stopper && starter != nullptr)
         {
             Node x = Node(*starter);
             // tail->next = &x;
             addNode(x);
-            add_2nd_to_1st(&tail->store, &Store);
+            add_2nd_to_1st(tail->store, &Store);
             tail->price += price;
             starter = starter->next;
             tail->validity.push_back(ind);
         }
-        Node x = Node(*starter);
-        // cout << "fsfsdfdfsdfsd" << endl;
-        tail->next = &x;
-        assert(1 == 2);
-        add_2nd_to_1st(&tail->store, &Store);
-        tail->price += price;
-        tail->validity.push_back(ind);
+        if (starter != nullptr)
+        {
+            Node x = Node(*starter);
+            // cout << "fsfsdfdfsdfsd" << endl;
+            tail->next = &x;
+            // add_2nd_to_1st(&tail->store, &Store);
+            tail->price += price;
+            tail->validity.push_back(ind);
+        }
         // create a new node for this order
         addNode(Store, vector<int>(1, ind), price);
         return;

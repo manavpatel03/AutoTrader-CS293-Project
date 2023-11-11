@@ -239,6 +239,8 @@ int main(int argc, char **argv)
                 // cout << "hi" << endl;
                 // cout << "fsfsdfdfsdfsd" << endl;
                 Combinations.addtoLC(Storage, price, j);
+                cout << "rizzzzz" << endl;
+                Combinations.Display();
                 int plchlder;
                 vector<int> S = Combinations.getarbitrage(plchlder);
                 if (S.size() == 0)

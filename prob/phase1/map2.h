@@ -393,6 +393,25 @@ public:
     // by the "search" method is
     // statically allocated and therefore
     // it's been destroyed when it is called out
+
+    Map2 *copy(Map2 *M)
+    {
+        if (M == nullptr)
+        {
+            return nullptr;
+        }
+
+        // Create a new node with the same value as the current node
+        Map2 *newNode = new Map2;
+        newNode->first = M->first;
+        newNode->second = M->second;
+        // Recursively copy the left and right subtrees
+        newNode->left = copy(M->left);
+        newNode->right = copy(M->right);
+
+        return newNode;
+    }
+
     int operator[](std::string key) const
     {
         return search(key);
