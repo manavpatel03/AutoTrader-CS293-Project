@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include "map.h"
+// #include "map2.h"
+#include "ll.h"
 class AutoTrader
 {
 public:
@@ -177,6 +179,96 @@ int main(int argc, char **argv)
                 i += 3;
             }
         }
+    }
+    if (which == '2')
+    {
+        LinkedList Combinations;
+        vector<int> first_elem;
+        int i = 0;
+        int j = 0;
+        bool buffer_size_check = true;
+        int final_profit = 0;
+        while (buffer_size_check)
+        {
+            std::string message = rcv.readIML();
+            if (message.find("$") != std::string::npos)
+                buffer_size_check = false;
+            while (i < message.length())
+            {
+
+                char last_char;
+                bool price_equal = 0;
+                Map2 Storage;
+                int price = 0;
+                first_elem.push_back(i);
+                while (message[i] != '#')
+                {
+                    std::string cmpny = "";
+                    if (message[i] >= 48 && message[i] <= 57)
+                        price_equal = true;
+                    while (message[i] != 32)
+                    {
+                        cmpny.push_back(message[i]);
+                        i++;
+                    }
+                    i++;
+                    std::string quantity = "";
+                    if (price_equal)
+                    {
+                        last_char = message[i];
+                        price_equal = false;
+                        price = stoi(cmpny);
+                        i += 3;
+                        j++;
+                        break;
+                    }
+                    while (message[i] != 32)
+                    {
+                        quantity.push_back(message[i]);
+                        i++;
+                    }
+                    Storage.insert(cmpny, stoi(quantity));
+                    i++;
+                    //
+                }
+                if (last_char == 's')
+                {
+                    price *= -1;
+                }
+                Combinations.addtoLC(Storage, price, j);
+                int plchlder;
+                vector<int> S = Combinations.getarbitrage(plchlder);
+                if (S.size() == 0)
+                {
+                    cout << "No Trade" << std::endl;
+                }
+                else
+                {
+                    final_profit += plchlder;
+                    for (int u = 0; u < S.size(); u++)
+                    {
+                        int k = S[u];
+                        while (message[k] != '#')
+                        {
+                            cout << message[k];
+                            if (message[k + 1] == '#')
+                            {
+                                if (message[k] == 'b')
+                                    cout << 's';
+                                if (message[k] == 's')
+                                    cout << 'b';
+                            }
+                            k++;
+                        }
+                        cout << endl;
+                    }
+                }
+                vector<int> delrange(S);
+                Combinations.remove_invalid(delrange);
+                // now write LC logic
+            }
+        }
+        cout << final_profit;
     }
 
     // AutoTrader at; // Move this line here
