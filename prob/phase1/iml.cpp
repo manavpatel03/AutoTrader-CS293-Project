@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 #include <fstream>
 
-const int PORT = 8884;
+const int PORT = 8890;
 const int BUFFER_SIZE = 1024;
 
 int main(int argc, char **argv)
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     {
         // Send the message to the receiver
         bytesSent = send(clientSocket, message.c_str(), message.length(), 0);
-        sleep(0.1);
+        usleep(0);
         if (bytesSent == -1)
         {
             std::cerr << "Error sending data to receiver." << std::endl;

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "map2.h"
 #include <vector>
+#include <cassert>
 using namespace std;
 
 class Node
@@ -46,7 +47,24 @@ public:
         tail = NULL;
     }
 
-    Node *addNode(Map2 x, vector<int> y, int z)
+    void addNode(Node newNode)
+    {
+        if (head == NULL)
+        {
+            head = &newNode;
+            tail = &newNode;
+            tail->next = NULL;
+        }
+        else
+        {
+            tail->next = &newNode;
+            tail = &newNode;
+            tail->next = NULL;
+        }
+        return;
+    }
+
+    void addNode(Map2 x, vector<int> y, int z)
     {
         Node *newNode = new Node(z, y, x);
 
@@ -60,7 +78,7 @@ public:
             tail->next = newNode;
             tail = newNode;
         }
-        return newNode;
+        return;
     }
     void Display()
     {
@@ -80,19 +98,25 @@ public:
     }
     void addtoLC(Map2 Store, int price, int ind)
     {
+        cout << "fsfsdfdfsdfsd" << endl;
         Node *starter = head;
         Node *stopper = tail;
+        // cout << "fsfsdfdfsdfsd" << endl;
+        // assert(ind == -133);
         while (starter != stopper)
         {
             Node x = Node(*starter);
-            tail->next = &x;
+            // tail->next = &x;
+            addNode(x);
             add_2nd_to_1st(&tail->store, &Store);
             tail->price += price;
             starter = starter->next;
             tail->validity.push_back(ind);
         }
         Node x = Node(*starter);
+        // cout << "fsfsdfdfsdfsd" << endl;
         tail->next = &x;
+        assert(1 == 2);
         add_2nd_to_1st(&tail->store, &Store);
         tail->price += price;
         tail->validity.push_back(ind);
@@ -102,6 +126,7 @@ public:
     }
     void add_2nd_to_1st(Map2 *a, Map2 *b)
     {
+        // cout << "fsfsdfdfsdfsd" << endl;
         if (b != nullptr)
         {
             add_2nd_to_1st(a, b->left);

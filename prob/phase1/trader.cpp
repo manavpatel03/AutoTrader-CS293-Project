@@ -211,6 +211,7 @@ int main(int argc, char **argv)
                         cmpny.push_back(message[i]);
                         i++;
                     }
+                    // std::cout << cmpny << endl;
                     i++;
                     std::string quantity = "";
                     if (price_equal)
@@ -235,6 +236,8 @@ int main(int argc, char **argv)
                 {
                     price *= -1;
                 }
+                // cout << "hi" << endl;
+                // cout << "fsfsdfdfsdfsd" << endl;
                 Combinations.addtoLC(Storage, price, j);
                 int plchlder;
                 vector<int> S = Combinations.getarbitrage(plchlder);
