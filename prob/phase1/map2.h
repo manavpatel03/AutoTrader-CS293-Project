@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <cassert>
 using namespace std;
 
 // Custom Map Class
@@ -360,6 +361,37 @@ public:
     int depth;
     int second;
 
+    Map2 *copyMap(const Map2 *source, Map2 *rt)
+    {
+        if (source == nullptr)
+        {
+            return nullptr;
+        }
+
+        // Create a new node and copy data
+        Map2 *newNode = new Map2;
+        newNode->root = rt;
+        newNode->first = source->first;
+        newNode->second = source->second;
+        newNode->depth = source->depth;
+        newNode->left = newNode->right = newNode->par = nullptr;
+
+        // Recursively copy left and right subtrees
+        newNode->left = copyMap(source->left, rt);
+        if (newNode->left != nullptr)
+        {
+            newNode->left->par = newNode;
+        }
+
+        newNode->right = copyMap(source->right, rt);
+        if (newNode->right != nullptr)
+        {
+            newNode->right->par = newNode;
+        }
+
+        return newNode;
+    }
+
     // overloaded [] operator for assignment or
     // inserting a key-value pairs in the map2
     // since it might change the members of
@@ -394,23 +426,53 @@ public:
     // statically allocated and therefore
     // it's been destroyed when it is called out
 
-    Map2 *copy(Map2 *M)
-    {
-        if (M == nullptr)
-        {
-            return nullptr;
-        }
+    // Map2 *copycall(Map2 *src)
+    // {
+    //     int i = 0;
+    //     Map2 *rot = (Map2 *)malloc(sizeof(Map2));
+    //     rot->root = rot;
+    //     rot = copy(i, rot, src);
+    //     return rot;
+    // }
 
-        // Create a new node with the same value as the current node
-        Map2 *newNode = new Map2;
-        newNode->first = M->first;
-        newNode->second = M->second;
-        // Recursively copy the left and right subtrees
-        newNode->left = copy(M->left);
-        newNode->right = copy(M->right);
-
-        return newNode;
-    }
+    // Map2 *copy(int &count, Map2 *rt, Map2 *src)
+    // {
+    //     if (root == nullptr)
+    //     {
+    //         return nullptr;
+    //     }
+    //     if (count == 0)
+    //     {
+    //         count = 1;
+    //         rt->first = src->first;
+    //         rt->second = src->second;
+    //         // rt->par = src->par;
+    //         rt->root = rt;
+    //         // Depth of a rt shall be 1 and not zero to differentiate between no child(which returns nullptr) and having child(returns 1) rt->depth = rt->depth;
+    //         if (left != nullptr)
+    //             rt->left = src->left->copy(count, rt, src->left);
+    //         if (right != nullptr)
+    //             rt->right = src->right->copy(count, rt, src->right);
+    //         return rt;
+    //     }
+    //     // return nullptr;
+    //     else
+    //     {
+    //         // Create a new node with the same value as the current node
+    //         Map2 *newnode = (Map2 *)malloc(sizeof(Map2));
+    //         // cout << first << endl;
+    //         newnode->first = src->first;
+    //         newnode->second = src->second;
+    //         //newnode->par = src->par;
+    //         newnode->root = rt;
+    //         // Depth of a newnode shall be 1 and not zero to differentiate between no child(which returns nullptr) and having child(returns 1) newnode->depth = root->depth;
+    //         if (left != nullptr)
+    //             newnode->left = left->copy(count, rt, src->left);
+    //         if (right != nullptr)
+    //             newnode->right = right->copy(count, rt, src->right);
+    //         return newnode;
+    //     }
+    // }
 
     int operator[](std::string key) const
     {

@@ -27,18 +27,18 @@ public:
         price = pri;
         validity = vector<int>(validy);
         next = NULL;
-        store = ste.copy(&ste);
+        // store = ste.copycall(&ste);
         // store->inorderTraversal();
         // ste.inorderTraversal();
     }
 
-    // Copy constructor
+    // copycall constructor
     Node(const Node &node)
     {
         price = node.price;
         validity = vector<int>(node.validity);
         next = NULL;
-        store = node.store->copy(node.store);
+        // store = node.store->copycall(node.store);
     }
 };
 

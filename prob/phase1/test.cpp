@@ -1,18 +1,23 @@
 #include <iostream>
 #include <string>
-#include "map2.h"
+// #include "map2.h"
+#include <cassert>
 #include "ll.h"
 
 using namespace std;
 int n = 50000;
 int main()
 {
-    for (int i = 0; i < n - 1; i++)
-    {
-        cout << "ASML " + to_string(i + 1) + " " + "b#\n";
-    }
-    for (int i = 0; i < n - 1; i++)
-    {
-        cout << "ASML " + to_string(i + 1) + " " + "s#\n";
-    }
+    Map2 s;
+    s.insert("A", 19);
+    s.insert("B", 34);
+    Map2 *q = new Map2;
+    q = q->copyMap(&s, q);
+    s.insert("C", 68);
+    assert(s.root != q->root);
+    s.inorderTraversal();
+    LinkedList a;
+    // a.Display();
+    cout << endl;
+    q->inorderTraversal();
 }
