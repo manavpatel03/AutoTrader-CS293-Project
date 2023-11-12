@@ -14,7 +14,7 @@ public:
     Node *right;
     int height;
 
-    int height(Node *N)
+    int height_val(Node *N)
     {
         if (N == NULL)
             return 0;
@@ -46,6 +46,36 @@ public:
     // A utility function to right
     // rotate subtree rooted with y
     // See the diagram given above.
+    void inorderwalk(Node *n)
+    {
+        if (n == NULL)
+        {
+            return;
+        }
+        inorderwalk(n->left);
+        cout << "key"
+             << " " << n->key << " "
+             << "value"
+             << " " << n->value << endl;
+        inorderwalk(n->right);
+    }
+    Node *copynode()
+    {
+        Node *x = new Node();
+        x->height = height;
+        x->key = key;
+        x->value = value;
+        if (left != NULL)
+        {
+            x->left = left->copynode();
+        }
+        if (right != NULL)
+        {
+            x->right = right->copynode();
+        }
+        return x;
+    }
+
     Node *rightRotate(Node *y)
     {
         Node *x = y->left;

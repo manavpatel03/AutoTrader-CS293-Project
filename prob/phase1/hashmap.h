@@ -7,9 +7,31 @@ class hashMap
 public:
     hashMap()
     {
-        Bucket.resize(SIZE);
+        Bucket.resize(SIZE, NULL);
     }
+
+    hashMap(hashMap *sample)
+    {
+        hashMap M = hashMap();
+        for (int i = 0; i < SIZE; i++)
+        {
+
+            if (sample->Bucket[i] != NULL)
+                M.Bucket[i] = sample->Bucket[i]->copynode();
+        }
+    }
+
     vector<Node *> Bucket;
+
+    void print_tree()
+    {
+        for (int i = 0; i < 69; i++)
+        {
+            cout << i << "." << endl;
+            Bucket[i]->inorderwalk(Bucket[i]);
+        }
+    }
+
     int hashVal(string K)
     {
         int h = 0;  // Initialize the hash value to 0
@@ -24,6 +46,8 @@ public:
 
         return h;
     }
+
+    int *search_Val(string k) { return Bucket[hashVal(k)]->search(k); }
 
     int addorinsert(string K, int val)
     {
