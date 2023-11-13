@@ -25,11 +25,30 @@ public:
 
     void print_tree()
     {
+        cout << "-----------NEW ITERATION------" << endl;
         for (int i = 0; i < 69; i++)
         {
-            cout << i << "." << endl;
-            Bucket[i]->inorderwalk(Bucket[i]);
+            if (Bucket[i] != NULL)
+            {
+                cout << i << "." << endl;
+                Bucket[i]->inorderwalk(Bucket[i]);
+            }
         }
+        cout << "-----------END------" << endl
+             << endl;
+    }
+
+    bool Checkzero()
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (Bucket[i] != NULL)
+            {
+                if (Bucket[i]->walkcheck() == false)
+                    return false;
+            }
+        }
+        return true;
     }
 
     int hashVal(string K)
@@ -49,7 +68,7 @@ public:
 
     int *search_Val(string k) { return Bucket[hashVal(k)]->search(k); }
 
-    int addorinsert(string K, int val)
+    void addorinsert(string K, int val)
     {
         int ind = hashVal(K);
         if (Bucket[ind] == NULL)
@@ -73,6 +92,7 @@ public:
                 int *ptr = Bucket[ind]->search(K);
                 *ptr += val;
             }
+            return;
         }
     }
 };

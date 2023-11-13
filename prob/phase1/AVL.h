@@ -59,6 +59,23 @@ public:
              << " " << n->value << endl;
         inorderwalk(n->right);
     }
+
+    bool walkcheck()
+    {
+        bool l, r;
+        if (value != 0)
+            return false;
+        if (left == NULL)
+            l = 1;
+        else
+            l = left->walkcheck();
+        if (right == NULL)
+            r = 1;
+        else
+            r = right->walkcheck();
+        return (l and r);
+    }
+
     Node *copynode()
     {
         Node *x = new Node();
@@ -86,11 +103,11 @@ public:
         y->left = T2;
 
         // Update heights
-        y->height = max(y->left->height,
-                        y->right->height) +
+        y->height = max(height_val(y->left),
+                        height_val(y->right)) +
                     1;
-        x->height = max(x->left->height,
-                        x->right->height) +
+        x->height = max(height_val(x->left),
+                        height_val(x->right)) +
                     1;
 
         // Return new root
@@ -110,11 +127,11 @@ public:
         x->right = T2;
 
         // Update heights
-        x->height = max(x->left->height,
-                        x->right->height) +
+        x->height = max(height_val(x->left),
+                        height_val(x->right)) +
                     1;
-        y->height = max(y->left->height,
-                        y->right->height) +
+        y->height = max(height_val(y->left),
+                        height_val(y->right)) +
                     1;
 
         // Return new root
@@ -183,8 +200,8 @@ public:
             return root;
 
         // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
-        root->height = 1 + max(root->left->height,
-                               root->right->height);
+        root->height = 1 + max(height_val(root->left),
+                               height_val(root->right));
 
         // STEP 3: GET THE BALANCE FACTOR OF
         // THIS NODE (to check whether this
@@ -238,7 +255,11 @@ public:
     {
         if (N == NULL)
             return 0;
-        return N->left->height - N->right->height;
+
+        int leftHeight = (N->left == NULL) ? 0 : N->left->height;
+        int rightHeight = (N->right == NULL) ? 0 : N->right->height;
+
+        return leftHeight - rightHeight;
     }
 
     // Recursive function to insert a key
@@ -249,17 +270,28 @@ public:
         /* 1. Perform the normal BST insertion */
         if (node == NULL)
             return (newNode(key, value));
-
         if (key < node->key)
             node->left = insert(node->left, key, value);
         else if (key > node->key)
             node->right = insert(node->right, key, value);
         else // Equal keys are not allowed in BST
             return node;
-
         /* 2. Update height of this ancestor node */
-        node->height = 1 + max(node->left->height,
-                               node->right->height);
+        if (left != NULL && right != NULL)
+            node->height = 1 + max(node->left->height,
+                                   node->right->height);
+        else if (left == NULL && right != NULL)
+        {
+            node->height = 1 + node->right->height;
+        }
+        else if (right == NULL && left != NULL)
+        {
+            node->height = 1 + node->left->height;
+        }
+        else
+        {
+            node->height = 1;
+        }
 
         /* 3. Get the balance factor of this ancestor
             node to check whether this node became
