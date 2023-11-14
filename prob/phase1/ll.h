@@ -1,19 +1,19 @@
 #include <iostream>
-#include "map2.h"
+#include "hashmap.h"
 #include <vector>
 #include <cassert>
 using namespace std;
 
-class Node
+class Node_ll
 {
 public:
     int price;
     vector<int> validity;
-    Map2 *store;
-    Node *next;
+    hashMap *store;
+    Node_ll *next;
 
     // Default constructor
-    Node()
+    Node_ll()
     {
         price = 0;
         validity = vector<int>();
@@ -22,7 +22,7 @@ public:
     }
 
     // Parameterized constructor
-    Node(int pri, vector<int> validy, Map2 ste)
+    Node_ll(int pri, vector<int> validy, hashMap ste)
     {
         price = pri;
         validity = vector<int>(validy);
@@ -33,28 +33,29 @@ public:
     }
 
     // copycall constructor
-    Node(const Node &node)
+    Node_ll(const Node_ll &node)
     {
         price = node.price;
         validity = vector<int>(node.validity);
         next = NULL;
         // store = node.store->copycall(node.store);
+        store = &hashMap(node.store);
     }
 };
 
 class LinkedList
 {
 private:
-    Node *head;
-    Node *tail;
+    Node_ll *head;
+    Node_ll *tail;
 
 public:
     LinkedList() : head(NULL), tail(NULL) {}
 
     ~LinkedList()
     {
-        Node *current = head;
-        Node *next = NULL;
+        Node_ll *current = head;
+        Node_ll *next = NULL;
 
         while (current != NULL)
         {
@@ -67,7 +68,7 @@ public:
         tail = NULL;
     }
 
-    void addNode(Node newNode)
+    void addNode(Node_ll newNode)
     {
         if (head == NULL)
         {
@@ -84,9 +85,9 @@ public:
         return;
     }
 
-    void addNode(Map2 x, vector<int> y, int z)
+    void addNode(hashMap x, vector<int> y, int z)
     {
-        Node *newNode = new Node(z, y, x);
+        Node_ll *newNode = new Node_ll(z, y, x);
 
         if (head == NULL)
         {
@@ -102,7 +103,7 @@ public:
     }
     void Display()
     {
-        Node *itr = head;
+        Node_ll *itr = head;
         if (head == nullptr && tail == nullptr)
             cout << "bhai null hia";
         while (itr != tail && itr != NULL)
@@ -125,28 +126,29 @@ public:
                 }
             }
             cout << endl;
-            itr->store->inorderTraversal();
+            itr->store->print_tree();
         }
     }
-    void addtoLC(Map2 Store, int price, int ind)
+    void addtoLC(hashMap Store, int price, int ind)
     {
-        Node *starter = head;
-        Node *stopper = tail;
+        Node_ll *starter = head;
+        Node_ll *stopper = tail;
         cout << "fsfsdfdfsdfsd" << endl;
         // assert(starter != stopper);
         while (starter != stopper && starter != nullptr)
         {
-            Node x = Node(*starter);
+            Node_ll x = Node_ll(*starter);
             // tail->next = &x;
             addNode(x);
-            add_2nd_to_1st(tail->store, &Store);
+            // add_2nd_to_1st(tail->store, &Store);
+            
             tail->price += price;
             starter = starter->next;
             tail->validity.push_back(ind);
         }
         if (starter != nullptr)
         {
-            Node x = Node(*starter);
+            Node_ll x = Node_ll(*starter);
             // cout << "fsfsdfdfsdfsd" << endl;
             tail->next = &x;
             // add_2nd_to_1st(&tail->store, &Store);
@@ -155,26 +157,6 @@ public:
         }
         // create a new node for this order
         addNode(Store, vector<int>(1, ind), price);
-        return;
-    }
-    void add_2nd_to_1st(Map2 *a, Map2 *b)
-    {
-        // cout << "fsfsdfdfsdfsd" << endl;
-        if (b != nullptr)
-        {
-            add_2nd_to_1st(a, b->left);
-            // Process the current a (e.g., print or store the key-value pair)
-            Map2 *curr = a->find(b->first);
-            if (curr == nullptr)
-            {
-                a->insert(b->first, b->second);
-            }
-            else
-            {
-                curr->second += b->second;
-            }
-            add_2nd_to_1st(a, b->right);
-        }
         return;
     }
 
@@ -187,16 +169,16 @@ public:
         }
         return true;
     }
-    void deleteNode(Node *node)
+    void deleteNode(Node_ll *node)
     {
-        Node *prev = head;
+        Node_ll *prev = head;
         if (head == NULL || tail == NULL)
         {
             return;
         }
         if (head == node)
         {
-            Node *temp = head;
+            Node_ll *temp = head;
             head = node->next;
             delete temp;
         }
@@ -231,8 +213,8 @@ public:
     }
     void remove_invalid(vector<int> used_up)
     {
-        Node *current = head;
-        Node *a = head;
+        Node_ll *current = head;
+        Node_ll *a = head;
         while (current != NULL)
         {
             for (int i = 0; i < used_up.size(); i++)
@@ -250,9 +232,9 @@ public:
 
     vector<int> getarbitrage(int &profit)
     {
-        Node *minnode = nullptr;
+        Node_ll *minnode = nullptr;
         int maxpric = INT32_MIN;
-        Node *itr = head;
+        Node_ll *itr = head;
         while (itr != NULL)
         {
             if (checkzeros(itr->validity))

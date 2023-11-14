@@ -68,6 +68,17 @@ public:
 
     int *search_Val(string k) { return Bucket[hashVal(k)]->search(k); }
 
+    void addMap(hashMap *X)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (X->Bucket[i] != NULL)
+            {
+               
+            }
+        }
+    }
+
     void addorinsert(string K, int val)
     {
         int ind = hashVal(K);

@@ -93,6 +93,15 @@ public:
         return x;
     }
 
+    void addtoBucket(hashMap X, Node *src)
+    {
+        if (src == NULL)
+            return;
+        X.addorinsert(src->key, src->value);
+        addtoBucket(X, src->left);
+        addtoBucket(X, src->right);
+    }
+
     Node *rightRotate(Node *y)
     {
         Node *x = y->left;

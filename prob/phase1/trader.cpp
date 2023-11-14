@@ -198,7 +198,7 @@ int main(int argc, char **argv)
 
                 char last_char;
                 bool price_equal = 0;
-                Map2 Storage;
+                hashMap Storage;
                 int price = 0;
                 first_elem.push_back(i);
                 while (message[i] != '#')
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
                         quantity.push_back(message[i]);
                         i++;
                     }
-                    Storage.insert(cmpny, stoi(quantity));
+                    Storage.addorinsert(cmpny, stoi(quantity));
                     i++;
                     //
                 }
