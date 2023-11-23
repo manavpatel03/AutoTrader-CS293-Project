@@ -73,9 +73,8 @@ public:
         tail = NULL;
     }
 
-    void addNode(Node_ll newNode)
+    void addNode(Node_ll &newNode)
     {
-        // std::cout << "chal" << endl;
         if (head == NULL)
         {
             head = &newNode;
@@ -88,6 +87,7 @@ public:
             tail = &newNode;
             tail->next = NULL;
         }
+        // std::cout << "chal" << endl;
         return;
     }
 
@@ -137,6 +137,16 @@ public:
             itr = itr->next;
         }
     }
+    void add2ndto1st(hashMap X, Node_ll *ni)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (X.Bucket[i] == NULL)
+                continue;
+            ni->store->addMap(X.Bucket[i]);
+        }
+    }
+
     void addtoLC(hashMap Store, int price, int ind)
     {
         Node_ll *starter = head;
@@ -149,7 +159,6 @@ public:
             // tail->next = &x;
             addNode(x);
             // add_2nd_to_1st(tail->store, &Store);
-
             tail->price += price;
             starter = starter->next;
             tail->validity.push_back(ind);
@@ -162,6 +171,8 @@ public:
             // add_2nd_to_1st(&tail->store, &Store);
             tail->price += price;
             tail->validity.push_back(ind);
+            // tail = tail->next;
+            // tail->next = NULL;
         }
         // create a new node for this order
         addNode(Store, vector<int>(1, ind), price);

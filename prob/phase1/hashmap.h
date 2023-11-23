@@ -76,14 +76,14 @@ public:
         addtoBucket(X, src->right);
         return;
     }
-    void addMap(hashMap *X)
+    void addMap(Node *root)
     {
-        for (int i = 0; i < SIZE; i++)
-        {
-            if (X->Bucket[i] != NULL)
-            {
-            }
-        }
+        if (root == NULL)
+            return;
+        addorinsert(root->key, root->value);
+        addMap(root->left);
+        addMap(root->right);
+        return;
     }
 
     void addorinsert(string K, int val)
