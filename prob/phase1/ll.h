@@ -147,41 +147,49 @@ public:
         }
     }
 
-    void addtoLC(hashMap Store, int price, int ind)
+    void addtoLC(hashMap Store, int pr, int ind)
     {
-        Node_ll *starter = head;
-        Node_ll *stopper = tail;
+        vector<int> w;
+        w.push_back(ind);
         if (head == NULL)
         {
-            addNode(Store, vector<int>(1, ind), price);
+
+            addNode(Store, w, pr);
             return;
         }
-        // cout << "fsfsdfdfsdfsd" << endl;
-        // assert(starter != stopper);
-        while (starter != stopper)
+        LinkedList *S = duplicateLL();
+        Node_ll *itr = S->head;
+        while (itr != NULL)
         {
-            // Node_ll *x = new Node_ll(*starter);
-            // tail->next = &x;
-            addNode(starter->store, starter->validity, starter->price);
-            Display();
-            // add_2nd_to_1st(tail->store, &Store);
-            starter->price += price;
-            starter->validity.push_back(ind);
-            starter = starter->next;
+            itr->price += pr;
+            itr->validity.push_back(ind);
         }
-        // Node_ll *x = new Node_ll(*starter);
-        // tail->next = &x;
-        // addNode(starter->store, starter->validity, starter->price);
-        // // add_2nd_to_1st(tail->store, &Store);
-        // starter->price += price;
-        // starter->validity.push_back(ind);
-        // // add_2nd_to_1st(tail->store, &Store);
-        // // add_2nd_to_1st(&tail->store, &Store);
-        // // tail = tail->next;
-        // // tail->next = NULL;
-        // // create a new node for this order
-        // addNode(Store, vector<int>(1, ind), price);
+        S->addNode(Store, w, pr);
+        tail->next = S->head;
         return;
+    }
+
+    LinkedList *duplicateLL()
+    {
+        LinkedList *L = new LinkedList();
+        L->head = NULL;
+        L->tail = NULL;
+        if (head == NULL)
+        {
+            return L;
+        }
+        else
+        {
+            int i = 0;
+            Node_ll *itr = head;
+            while (itr != NULL)
+            {
+                cout << i++ << endl;
+                L->addNode(itr->store, itr->validity, itr->price);
+                L->tail->next = NULL;
+            }
+            return L;
+        }
     }
 
     bool checkzeros(vector<int> V)
