@@ -39,18 +39,22 @@ public:
         validity = vector<int>(node.validity);
         next = NULL;
         // store = node.store->copycall(node.store);
-        store = &hashMap(node.store);
+        hashMap f = hashMap(node.store);
+        store = &f;
     }
 };
 
 class LinkedList
 {
-private:
-    Node_ll *head;
-    Node_ll *tail;
 
 public:
-    LinkedList() : head(NULL), tail(NULL) {}
+    Node_ll *head;
+    Node_ll *tail;
+    LinkedList()
+    {
+        head = NULL;
+        tail = NULL;
+    }
 
     ~LinkedList()
     {
@@ -70,6 +74,7 @@ public:
 
     void addNode(Node_ll newNode)
     {
+        cout << "chal" << endl;
         if (head == NULL)
         {
             head = &newNode;
@@ -106,7 +111,7 @@ public:
         Node_ll *itr = head;
         if (head == nullptr && tail == nullptr)
             cout << "bhai null hia";
-        while (itr != tail && itr != NULL)
+        while (itr != NULL)
         {
             cout << "-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-" << endl;
             cout << "Price is : " << itr->price << endl;
@@ -115,25 +120,27 @@ public:
             {
                 cout << itr->validity[i] << " ";
             }
-            if (tail != NULL)
-            {
-                cout << "-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-" << endl;
-                cout << "Price is : " << tail->price << endl;
-                cout << "Here are the validity vectors : ";
-                for (int i = 0; i < tail->validity.size(); i++)
-                {
-                    cout << tail->validity[i] << " ";
-                }
-            }
+            // if (tail != NULL)
+            // {
+            //     cout << endl
+            //          << "-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-" << endl;
+            //     cout << "Price is : " << tail->price << endl;
+            //     cout << "Here are the validity vectors : ";
+            //     for (int i = 0; i < tail->validity.size(); i++)
+            //     {
+            //         cout << tail->validity[i] << " ";
+            //     }
+            // }
             cout << endl;
             itr->store->print_tree();
+            itr = itr->next;
         }
     }
     void addtoLC(hashMap Store, int price, int ind)
     {
         Node_ll *starter = head;
         Node_ll *stopper = tail;
-        cout << "fsfsdfdfsdfsd" << endl;
+        // cout << "fsfsdfdfsdfsd" << endl;
         // assert(starter != stopper);
         while (starter != stopper && starter != nullptr)
         {
@@ -141,7 +148,7 @@ public:
             // tail->next = &x;
             addNode(x);
             // add_2nd_to_1st(tail->store, &Store);
-            
+
             tail->price += price;
             starter = starter->next;
             tail->validity.push_back(ind);

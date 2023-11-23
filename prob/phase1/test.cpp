@@ -2,19 +2,23 @@
 #include <string>
 // #include "map2.h"
 #include <cassert>
-#include "hashmap.h"
+#include "ll.h"
 
 using namespace std;
-// int n = 50000;
+int n = 500;
 int main()
 {
-    hashMap m;
-    for (int i = 0; i < 5; i++)
+    LinkedList L = LinkedList();
+    hashMap H;
+    vector<int> a;
+    a.push_back(4);
+    for (int i = 0; i < 3; i++)
     {
-        m.addorinsert(to_string(i * 2), i + 69);
-        m.print_tree();
+        H.addorinsert(to_string(char(i + 97)), i * 100 + 10);
     }
-    hashMap X(m);
-    m.addorinsert("fs", 69);
-    X.print_tree();
+    // L->addtoLC(H, 69, 0);
+    Node_ll X = Node_ll(34, a, H);
+    cout << L.head << endl;
+    L.addNode(X);
+    L.Display();
 }

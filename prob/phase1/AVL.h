@@ -93,17 +93,9 @@ public:
         return x;
     }
 
-    void addtoBucket(hashMap X, Node *src)
-    {
-        if (src == NULL)
-            return;
-        X.addorinsert(src->key, src->value);
-        addtoBucket(X, src->left);
-        addtoBucket(X, src->right);
-    }
-
     Node *rightRotate(Node *y)
     {
+        std::cout << "here?" << std::endl;
         Node *x = y->left;
         Node *T2 = x->right;
 
@@ -118,7 +110,7 @@ public:
         x->height = max(height_val(x->left),
                         height_val(x->right)) +
                     1;
-
+        std::cout << "yes" << endl;
         // Return new root
         return x;
     }
@@ -128,6 +120,7 @@ public:
     // See the diagram given above.
     Node *leftRotate(Node *x)
     {
+        std::cout << "here?" << std::endl;
         Node *y = x->right;
         Node *T2 = y->left;
 
@@ -143,7 +136,8 @@ public:
                         height_val(y->right)) +
                     1;
 
-        // Return new root
+        // // Return new root
+        std::cout << "yes" << endl;
         return y;
     }
 
@@ -271,21 +265,43 @@ public:
         return leftHeight - rightHeight;
     }
 
+    void inBST(string k, int val)
+    {
+        if (k > key)
+        {
+            if (right == NULL)
+                right = newNode(k, val);
+            else
+                right->inBST(k, val);
+        }
+        else
+        {
+            if (left == NULL)
+                left = newNode(k, val);
+            else
+                left->inBST(k, val);
+        }
+        return;
+    }
+
     // Recursive function to insert a key
     // in the subtree rooted with node and
     // returns the new root of the subtree.
     Node *insert(Node *node, string key, int value)
     {
-        /* 1. Perform the normal BST insertion */
-        if (node == NULL)
-            return (newNode(key, value));
-        if (key < node->key)
-            node->left = insert(node->left, key, value);
-        else if (key > node->key)
-            node->right = insert(node->right, key, value);
-        else // Equal keys are not allowed in BST
-            return node;
+        cout << "here" << endl;
+        // /* 1. Perform the normal BST insertion */
+        // if (node == NULL)
+        //     return (newNode(key, value));
+        // if (key < node->key)
+        //     node->left = insert(node->left, key, value);
+        // else if (key > node->key)
+        //     node->right = insert(node->right, key, value);
+        // else // Equal keys are not allowed in BST
+        //     return node;
         /* 2. Update height of this ancestor node */
+        // inBST(node, key, value);
+        cout << "rch" << endl;
         if (left != NULL && right != NULL)
             node->height = 1 + max(node->left->height,
                                    node->right->height);

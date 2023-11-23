@@ -25,7 +25,7 @@ public:
 
     void print_tree()
     {
-        cout << "-----------NEW ITERATION------" << endl;
+        cout << "-----------NEW tree------" << endl;
         for (int i = 0; i < 69; i++)
         {
             if (Bucket[i] != NULL)
@@ -64,17 +64,25 @@ public:
         }
 
         return h;
+        // return 1;
     }
 
     int *search_Val(string k) { return Bucket[hashVal(k)]->search(k); }
-
+    void addtoBucket(hashMap X, Node *src)
+    {
+        if (src == NULL)
+            return;
+        X.addorinsert(src->key, src->value);
+        addtoBucket(X, src->left);
+        addtoBucket(X, src->right);
+        return;
+    }
     void addMap(hashMap *X)
     {
         for (int i = 0; i < SIZE; i++)
         {
             if (X->Bucket[i] != NULL)
             {
-               
             }
         }
     }
@@ -96,13 +104,14 @@ public:
         {
             if (Bucket[ind]->search(K) == NULL)
             {
-                Bucket[ind]->insert(Bucket[ind], K, val);
+                Bucket[ind]->inBST(K, val);
             }
             else
             {
                 int *ptr = Bucket[ind]->search(K);
                 *ptr += val;
             }
+            // cout << "end" << endl;
             return;
         }
     }
