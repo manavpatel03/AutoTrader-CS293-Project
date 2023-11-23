@@ -27,7 +27,7 @@ public:
         price = pri;
         validity = vector<int>(validy);
         next = NULL;
-        // store = ste.copycall(&ste);
+        store = new hashMap(ste);
         // store->inorderTraversal();
         // ste.inorderTraversal();
     }
@@ -39,6 +39,7 @@ public:
         validity = vector<int>(node.validity);
         next = NULL;
         // store = node.store->copycall(node.store);
+
         hashMap f = hashMap(node.store);
         store = &f;
     }
@@ -74,7 +75,7 @@ public:
 
     void addNode(Node_ll newNode)
     {
-        cout << "chal" << endl;
+        // std::cout << "chal" << endl;
         if (head == NULL)
         {
             head = &newNode;

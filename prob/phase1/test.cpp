@@ -8,7 +8,9 @@ using namespace std;
 int n = 500;
 int main()
 {
-    LinkedList L = LinkedList();
+    LinkedList *L = new LinkedList;
+    L->head = NULL;
+    L->tail = NULL;
     hashMap H;
     vector<int> a;
     a.push_back(4);
@@ -18,7 +20,8 @@ int main()
     }
     // L->addtoLC(H, 69, 0);
     Node_ll X = Node_ll(34, a, H);
-    cout << L.head << endl;
-    L.addNode(X);
-    L.Display();
+    cout << L->head << endl;
+    // L->addNode(X);
+    L->head = &X;
+    L->Display();
 }

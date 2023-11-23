@@ -15,7 +15,6 @@ public:
         hashMap M = hashMap();
         for (int i = 0; i < SIZE; i++)
         {
-
             if (sample->Bucket[i] != NULL)
                 M.Bucket[i] = sample->Bucket[i]->copynode();
         }
