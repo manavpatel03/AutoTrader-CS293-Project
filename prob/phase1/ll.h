@@ -151,31 +151,36 @@ public:
     {
         Node_ll *starter = head;
         Node_ll *stopper = tail;
+        if (head == NULL)
+        {
+            addNode(Store, vector<int>(1, ind), price);
+            return;
+        }
         // cout << "fsfsdfdfsdfsd" << endl;
         // assert(starter != stopper);
         while (starter != stopper)
         {
-            Node_ll x = Node_ll(*starter);
+            // Node_ll *x = new Node_ll(*starter);
             // tail->next = &x;
-            addNode(x);
+            addNode(starter->store, starter->validity, starter->price);
+            Display();
             // add_2nd_to_1st(tail->store, &Store);
-            tail->price += price;
+            starter->price += price;
+            starter->validity.push_back(ind);
             starter = starter->next;
-            tail->validity.push_back(ind);
         }
-        if (starter != nullptr)
-        {
-            Node_ll x = Node_ll(*starter);
-            // cout << "fsfsdfdfsdfsd" << endl;
-            tail->next = &x;
-            // add_2nd_to_1st(&tail->store, &Store);
-            tail->price += price;
-            tail->validity.push_back(ind);
-            // tail = tail->next;
-            // tail->next = NULL;
-        }
-        // create a new node for this order
-        addNode(Store, vector<int>(1, ind), price);
+        // Node_ll *x = new Node_ll(*starter);
+        // tail->next = &x;
+        // addNode(starter->store, starter->validity, starter->price);
+        // // add_2nd_to_1st(tail->store, &Store);
+        // starter->price += price;
+        // starter->validity.push_back(ind);
+        // // add_2nd_to_1st(tail->store, &Store);
+        // // add_2nd_to_1st(&tail->store, &Store);
+        // // tail = tail->next;
+        // // tail->next = NULL;
+        // // create a new node for this order
+        // addNode(Store, vector<int>(1, ind), price);
         return;
     }
 

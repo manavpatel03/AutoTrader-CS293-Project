@@ -19,10 +19,10 @@ int main()
         H.addorinsert(to_string(char(i + 97)), i * 100 + 10);
     }
     // L->addtoLC(H, 69, 0);
-    Node_ll X = Node_ll(34, a, H);
+    L->addNode(H, a, 233);
     // L->addNode(X);
-    L->head = &X;
-    L->tail = &X;
+    // L->head = &X;
+    // L->tail = &X;
     hashMap S;
     for (int i = 0; i < 3; i++)
     {
@@ -30,16 +30,22 @@ int main()
     }
     vector<int> j;
     j.push_back(1);
-    Node_ll RR = Node_ll(45, j, S);
-    L->tail->next = &RR;
-    L->tail = L->tail->next;
-    L->tail->next = NULL;
-    L->Display();
+    // Node_ll RR = Node_ll(45, j, S);
+    // L->tail->next = &RR;
+    // L->tail = L->tail->next;
+    // L->tail->next = NULL;
+    for (int i = 0; i < 1; i++)
+    {
+        L->addNode(S, j, i * 4 - 2 + 56);
+    }
+    // L->Display();
     hashMap q;
     for (int i = 1; i < 4; i++)
     {
         q.addorinsert(to_string(char(i + 97)), i * 10 + 10);
     }
+    L->Display();
+    cout << "real deal" << endl;
     L->addtoLC(q, 22, 2);
     L->Display();
 }
