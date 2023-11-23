@@ -23,12 +23,23 @@ int main()
     // L->addNode(X);
     L->head = &X;
     L->tail = &X;
-    L->tail->next = NULL;
     hashMap S;
     for (int i = 0; i < 3; i++)
     {
         S.addorinsert(to_string(char(i + 97)), i * 10 + 10);
     }
-    L->addtoLC(S, 69, 1);
+    vector<int> j;
+    j.push_back(1);
+    Node_ll RR = Node_ll(45, j, S);
+    L->tail->next = &RR;
+    L->tail = L->tail->next;
+    L->tail->next = NULL;
+    L->Display();
+    hashMap q;
+    for (int i = 1; i < 4; i++)
+    {
+        q.addorinsert(to_string(char(i + 97)), i * 10 + 10);
+    }
+    L->addtoLC(q, 22, 2);
     L->Display();
 }

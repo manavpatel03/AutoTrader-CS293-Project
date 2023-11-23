@@ -153,7 +153,7 @@ public:
         Node_ll *stopper = tail;
         // cout << "fsfsdfdfsdfsd" << endl;
         // assert(starter != stopper);
-        while (starter != stopper && starter != nullptr)
+        while (starter != stopper)
         {
             Node_ll x = Node_ll(*starter);
             // tail->next = &x;
