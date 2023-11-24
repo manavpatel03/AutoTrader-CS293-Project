@@ -26,7 +26,7 @@ int main()
     hashMap S;
     for (int i = 0; i < 3; i++)
     {
-        S.addorinsert(to_string(char(i + 97)), i * 10 + 10);
+        S.addorinsert(to_string(char(i + 97)), i + 10);
     }
     vector<int> j;
     j.push_back(1);
@@ -34,7 +34,7 @@ int main()
     // L->tail->next = &RR;
     // L->tail = L->tail->next;
     // L->tail->next = NULL;
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 31; i++)
     {
         L->addNode(&S, j, i * 4 - 2 + 56);
     }
@@ -44,7 +44,7 @@ int main()
     {
         q.addorinsert(to_string(char(i + 97)), i * 10 + 10);
     }
-    L->Display();
+    // L->Display();
     cout << "real deal" << endl;
     L->addtoLC(q, 22, 2);
     L->Display();

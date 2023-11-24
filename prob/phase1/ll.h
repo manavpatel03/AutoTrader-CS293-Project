@@ -138,13 +138,13 @@ public:
             itr = itr->next;
         }
     }
-    void add2ndto1st(hashMap &X, Node_ll *ni)
+    void add2ndto1st(hashMap *X, Node_ll *ni)
     {
         for (int i = 0; i < SIZE; i++)
         {
-            if (X.Bucket[i] == NULL)
+            if (X->Bucket[i] == NULL)
                 continue;
-            ni->store->addMap(X.Bucket[i]);
+            ni->store->addMap(X->Bucket[i]);
         }
     }
 
@@ -164,6 +164,10 @@ public:
         {
             itr->price += pr;
             itr->validity.push_back(ind);
+            for (int i = 0; i < SIZE; i++)
+            {
+                add2ndto1st(&Store, itr);
+            }
             itr = itr->next;
         }
         S->addNode(&Store, w, pr);
