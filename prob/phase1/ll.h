@@ -22,12 +22,12 @@ public:
     }
 
     // Parameterized constructor
-    Node_ll(int pri, vector<int> validy, hashMap ste)
+    Node_ll(int pri, vector<int> validy, hashMap& ste)
     {
         price = pri;
         validity = vector<int>(validy);
         next = NULL;
-        store = new hashMap(ste);
+        store = ste.Mapmaker(&ste);
         // store->inorderTraversal();
         // ste.inorderTraversal();
     }
@@ -40,8 +40,8 @@ public:
         next = NULL;
         // store = node.store->copycall(node.store);
 
-        hashMap f = hashMap(node.store);
-        store = &f;
+        hashMap* f = node.store->Mapmaker(node.store);
+        store = f;
     }
 };
 
@@ -137,7 +137,7 @@ public:
             itr = itr->next;
         }
     }
-    void add2ndto1st(hashMap X, Node_ll *ni)
+    void add2ndto1st(hashMap &X, Node_ll *ni)
     {
         for (int i = 0; i < SIZE; i++)
         {
@@ -147,7 +147,7 @@ public:
         }
     }
 
-    void addtoLC(hashMap Store, int pr, int ind)
+    void addtoLC(hashMap &Store, int pr, int ind)
     {
         vector<int> w;
         w.push_back(ind);

@@ -12,12 +12,21 @@ public:
 
     hashMap(hashMap *sample)
     {
-        hashMap M = hashMap();
         for (int i = 0; i < SIZE; i++)
         {
             if (sample->Bucket[i] != NULL)
-                M.Bucket[i] = sample->Bucket[i]->copynode();
+                this->Bucket[i] = sample->Bucket[i]->copynode();
         }
+    }
+
+    void inserter(hashMap *X, Node *a)
+    {
+        if (a == NULL)
+            return;
+        X->addorinsert(a->key, a->value);
+        inserter(X, a->left);
+        inserter(X, a->right);
+        return;
     }
 
     vector<Node *> Bucket;
@@ -113,5 +122,16 @@ public:
             // cout << "end" << endl;
             return;
         }
+    }
+
+    hashMap *Mapmaker(hashMap *sample)
+    {
+        hashMap *M = new hashMap();
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (sample->Bucket[i] != NULL)
+                inserter(M, sample->Bucket[i]);
+        }
+        return M;
     }
 };
