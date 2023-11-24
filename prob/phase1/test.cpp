@@ -46,12 +46,12 @@ int main()
     }
     // L->Display();
     // q.print_tree();
-    cout << "real deal" << endl;
+    // cout << "real deal" << endl;
     L->addtoLC(q, 22, 2);
-    L->Display();
+    // L->Display();
     int a69 = INT32_MIN;
-    vector<int>* ty = L->getarbitrage(a69);
-    cout << ty->size();
+    vector<int> ty = L->getarbitrage(a69);
+    // cout << ty.size();
     // for (int i = 0; i < ty.size(); i++)
     //     cout << ty[i] << endl;
     // L->remove_invalid(ty);

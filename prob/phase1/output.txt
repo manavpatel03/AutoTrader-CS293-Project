@@ -1,4 +1,126 @@
-Receiver is listening on port 8800
+Receiver is listening on port 8808
 No Trade
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : 10
+Here are the validity vectors : 1 
+-----------NEW tree------
+19.
+key X value -1
+20.
+key Y value 1
+-----------END------
+
 No Trade
-No Trade
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : 10
+Here are the validity vectors : 1 
+-----------NEW tree------
+19.
+key X value -1
+20.
+key Y value 1
+-----------END------
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : -5
+Here are the validity vectors : 1 2 
+-----------NEW tree------
+19.
+key X value -1
+20.
+key Y value 0
+21.
+key Z value 1
+-----------END------
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : -15
+Here are the validity vectors : 2 
+-----------NEW tree------
+20.
+key Y value -1
+21.
+key Z value 1
+-----------END------
+
+ 1 Y -1 10 bs
+1 Y -1 10 bs
+ Y -1 10 bs
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : 10
+Here are the validity vectors : 1 
+-----------NEW tree------
+19.
+key X value -1
+20.
+key Y value 1
+-----------END------
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : -5
+Here are the validity vectors : 1 2 
+-----------NEW tree------
+19.
+key X value -1
+20.
+key Y value 0
+21.
+key Z value 1
+-----------END------
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : -15
+Here are the validity vectors : 2 
+-----------NEW tree------
+20.
+key Y value -1
+21.
+key Z value 1
+-----------END------
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : 20
+Here are the validity vectors : 1 3 
+-----------NEW tree------
+19.
+key X value 0
+20.
+key Y value 1
+21.
+key Z value -1
+-----------END------
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : 5
+Here are the validity vectors : 1 2 3 
+-----------NEW tree------
+19.
+key X value 0
+20.
+key Y value 0
+21.
+key Z value 0
+-----------END------
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : -5
+Here are the validity vectors : 2 3 
+-----------NEW tree------
+19.
+key X value 1
+20.
+key Y value -1
+21.
+key Z value 0
+-----------END------
+
+-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-
+Price is : 10
+Here are the validity vectors : 3 
+-----------NEW tree------
+19.
+key X value 1
+21.
+key Z value -1
+-----------END------
+

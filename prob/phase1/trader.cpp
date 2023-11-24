@@ -182,6 +182,7 @@ int main(int argc, char **argv)
     }
     if (which == '2')
     {
+        int ja = 0;
         LinkedList Combinations;
         vector<int> first_elem;
         int i = 0;
@@ -204,10 +205,10 @@ int main(int argc, char **argv)
                 while (message[i] != '#')
                 {
                     std::string cmpny = "";
-                    if (message[i] >= 48 && message[i] <= 57)
-                        price_equal = true;
                     while (message[i] != 32)
                     {
+                        if (message[i] >= 48 && message[i] <= 57)
+                            price_equal = true;
                         cmpny.push_back(message[i]);
                         i++;
                     }
@@ -217,7 +218,9 @@ int main(int argc, char **argv)
                     if (price_equal)
                     {
                         last_char = message[i];
+                        // cout << "fdf : " << last_char << endl;
                         price_equal = false;
+                        // cout << "this is the value(a) : " << ++ja << cmpny << endl;
                         price = stoi(cmpny);
                         i += 3;
                         j++;
@@ -228,6 +231,8 @@ int main(int argc, char **argv)
                         quantity.push_back(message[i]);
                         i++;
                     }
+
+                    // cout << "this is the value : " << ++ja << quantity << endl;
                     Storage.addorinsert(cmpny, stoi(quantity));
                     i++;
                     //
@@ -246,16 +251,18 @@ int main(int argc, char **argv)
                 // cout << "rizzzzz" << endl;
                 // Combinations.Display();
                 int plchlder;
-                vector<int> *S = Combinations.getarbitrage(plchlder);
-                vector<int> validyans = *S;
-                if (S->size() == 0)
+                // vector<int> *S = ;
+                vector<int> validyans = Combinations.getarbitrage(plchlder);
+                // cout << "rizzzzz" << endl;
+                // cout << validyans.size();
+                if (validyans.size() == 0)
                 {
                     cout << "No Trade" << std::endl;
                 }
                 else
                 {
                     final_profit += plchlder;
-                    for (int u = 0; u < S->size(); u++)
+                    for (int u = 0; u < validyans.size(); u++)
                     {
                         int k = validyans[u];
                         while (message[k] != '#')
@@ -274,6 +281,7 @@ int main(int argc, char **argv)
                     }
                 }
                 vector<int> delrange(validyans);
+                Combinations.Display();
                 Combinations.remove_invalid(delrange);
                 // now write LC logic
             }
