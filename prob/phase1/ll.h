@@ -269,7 +269,7 @@ public:
         }
     }
 
-    vector<int> getarbitrage(int &profit)
+    vector<int>* getarbitrage(int &profit)
     {
         Node_ll *minnode = nullptr;
         int maxpric = INT32_MIN;
@@ -280,16 +280,22 @@ public:
             // cout << i++ << endl;
             if (itr->store->checkquant())
             {
+                // cout << "her";
                 if ((itr->price > maxpric) || (itr->price == maxpric && minnode != NULL && minnode->validity.size() > itr->validity.size()))
+                {
                     minnode = itr;
+                    maxpric = itr->price;
+                    // cout << "her";
+                }
             }
             itr = itr->next;
         }
         if (minnode == nullptr || maxpric <= 0)
         {
-            return vector<int>();
+            // cout << "ff" << endl;
+            return NULL;
         }
         profit = maxpric;
-        return minnode->validity;
+        return &minnode->validity;
     }
 };

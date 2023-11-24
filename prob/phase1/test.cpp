@@ -16,7 +16,7 @@ int main()
     a.push_back(0);
     for (int i = 0; i < 3; i++)
     {
-        H.addorinsert(to_string(char(i + 97)), i + 10);
+        H.addorinsert(to_string(char(i + 97)), 0);
     }
     // L->addtoLC(H, 69, 0);
     L->addNode(&H, a, 233);
@@ -49,7 +49,10 @@ int main()
     cout << "real deal" << endl;
     L->addtoLC(q, 22, 2);
     L->Display();
-    // int a69;
-    // vector<int> ty = L->getarbitrage(a69);
+    int a69 = INT32_MIN;
+    vector<int>* ty = L->getarbitrage(a69);
+    cout << ty->size();
+    // for (int i = 0; i < ty.size(); i++)
+    //     cout << ty[i] << endl;
     // L->remove_invalid(ty);
 }

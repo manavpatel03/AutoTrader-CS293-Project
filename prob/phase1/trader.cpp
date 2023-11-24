@@ -246,17 +246,18 @@ int main(int argc, char **argv)
                 // cout << "rizzzzz" << endl;
                 // Combinations.Display();
                 int plchlder;
-                vector<int> S = Combinations.getarbitrage(plchlder);
-                if (S.size() == 0)
+                vector<int> *S = Combinations.getarbitrage(plchlder);
+                vector<int> validyans = *S;
+                if (S->size() == 0)
                 {
                     cout << "No Trade" << std::endl;
                 }
                 else
                 {
                     final_profit += plchlder;
-                    for (int u = 0; u < S.size(); u++)
+                    for (int u = 0; u < S->size(); u++)
                     {
-                        int k = S[u];
+                        int k = validyans[u];
                         while (message[k] != '#')
                         {
                             cout << message[k];
@@ -272,7 +273,7 @@ int main(int argc, char **argv)
                         cout << endl;
                     }
                 }
-                vector<int> delrange(S);
+                vector<int> delrange(validyans);
                 Combinations.remove_invalid(delrange);
                 // now write LC logic
             }

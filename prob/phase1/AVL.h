@@ -43,9 +43,12 @@ public:
         return (node);
     }
 
-    bool checkq (Node* root) {
-        if(root == NULL) return true;
-        return (value == 0) and checkq(root->left) and checkq(root->right);
+    bool checkq(Node *root)
+    {
+        if (root == NULL)
+            return true;
+        // cout << (value == 0) << endl;
+        return (value == 0) && checkq(root->left) && checkq(root->right);
     }
 
     // A utility function to right
