@@ -172,6 +172,7 @@ public:
         }
         S->addNode(&Store, w, pr);
         tail->next = S->head;
+        tail = S->tail;
         return;
     }
 
@@ -256,16 +257,20 @@ public:
         Node_ll *a = head;
         while (current != NULL)
         {
+            bool chi = 0;
             for (int i = 0; i < used_up.size(); i++)
             {
                 if (binary_search(used_up[i], current->validity))
                 {
                     a = current->next;
                     deleteNode(current);
+                    chi = 1;
                     break;
                 }
             }
-            current = a;
+            if (chi)
+                continue;
+            current = current->next;
         }
     }
 
@@ -274,13 +279,16 @@ public:
         Node_ll *minnode = nullptr;
         int maxpric = INT32_MIN;
         Node_ll *itr = head;
+        // int i = 0;
         while (itr != NULL)
         {
+            // cout << i++ << endl;
             if (checkzeros(itr->validity))
             {
                 if (itr->price > maxpric)
                     minnode = itr;
             }
+            itr = itr->next;
         }
         if (minnode == nullptr || maxpric <= 0)
         {

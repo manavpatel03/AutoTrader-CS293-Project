@@ -85,6 +85,25 @@ public:
         addtoBucket(X, src->right);
         return;
     }
+
+    void makenegev()
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (Bucket[i] != NULL)
+                neg(Bucket[i]);
+        }
+    }
+
+    void neg(Node *S)
+    {
+        if (S == NULL)
+            return;
+        S->value *= -1;
+        neg(S->left);
+        neg(S->right);
+    }
+
     void addMap(Node *root)
     {
         if (root == NULL)

@@ -236,11 +236,15 @@ int main(int argc, char **argv)
                 {
                     price *= -1;
                 }
+                if (last_char == 'b')
+                {
+                    Storage.makenegev();
+                }
                 // cout << "hi" << endl;
                 // cout << "fsfsdfdfsdfsd" << endl;
                 Combinations.addtoLC(Storage, price, j);
                 // cout << "rizzzzz" << endl;
-                Combinations.Display();
+                // Combinations.Display();
                 int plchlder;
                 vector<int> S = Combinations.getarbitrage(plchlder);
                 if (S.size() == 0)

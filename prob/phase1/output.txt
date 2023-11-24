@@ -1,2 +1,2 @@
-Receiver is listening on port 6968
-fsfsdfdfsdfsd
+Receiver is listening on port 8802
+No Trade

@@ -48,5 +48,8 @@ int main()
     q.print_tree();
     cout << "real deal" << endl;
     L->addtoLC(q, 22, 2);
-    L->Display();
+    // L->Display();
+    int a69;
+    vector<int> ty = L->getarbitrage(a69);
+    L->remove_invalid(ty);
 }

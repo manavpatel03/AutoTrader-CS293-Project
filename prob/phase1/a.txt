@@ -1,0 +1,3 @@
+./trader 2 > output.txt &
+sleep 1
+./iml inputs/data2.txt
