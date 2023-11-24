@@ -95,6 +95,14 @@ public:
         }
     }
 
+    bool checkquant()
+    {
+        for (int i = 0; i < SIZE; i++)
+            if (!Bucket[i]->checkq(Bucket[i]))
+                return false;
+        return true;
+    }
+
     void neg(Node *S)
     {
         if (S == NULL)

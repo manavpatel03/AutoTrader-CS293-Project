@@ -278,9 +278,9 @@ public:
         while (itr != NULL)
         {
             // cout << i++ << endl;
-            if (checkzeros(itr->validity))
+            if (itr->store->checkquant())
             {
-                if (itr->price > maxpric)
+                if ((itr->price > maxpric) || (itr->price == maxpric && minnode != NULL && minnode->validity.size() > itr->validity.size()))
                     minnode = itr;
             }
             itr = itr->next;

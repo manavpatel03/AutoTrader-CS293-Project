@@ -43,6 +43,11 @@ public:
         return (node);
     }
 
+    bool checkq (Node* root) {
+        if(root == NULL) return true;
+        return (value == 0) and checkq(root->left) and checkq(root->right);
+    }
+
     // A utility function to right
     // rotate subtree rooted with y
     // See the diagram given above.
