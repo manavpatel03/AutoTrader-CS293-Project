@@ -28,28 +28,28 @@ int main()
     {
         S.addorinsert(to_string(char(i + 97)), i + 10);
     }
-    // vector<int> j;
-    // j.push_back(1);
-    // // Node_ll RR = Node_ll(45, j, S);
-    // // L->tail->next = &RR;
-    // // L->tail = L->tail->next;
-    // // L->tail->next = NULL;
-    // for (int i = 0; i < 31; i++)
-    // {
-    //     L->addNode(&S, j, i * 4 - 2 + 56);
-    // }
+    vector<int> j;
+    j.push_back(1);
+    // Node_ll RR = Node_ll(45, j, S);
+    // L->tail->next = &RR;
+    // L->tail = L->tail->next;
+    // L->tail->next = NULL;
+    for (int i = 0; i < 1; i++)
+    {
+        L->addNode(&S, j, i * 4 - 2 + 56);
+    }
     // L->Display();
     hashMap q;
     for (int i = 1; i < 4; i++)
     {
-        q.addorinsert(to_string(char(i + 97)), i * 10 + 10);
+        q.addorinsert(to_string(char(i + 97)), i + 3);
     }
     // L->Display();
-    q.print_tree();
+    // q.print_tree();
     cout << "real deal" << endl;
     L->addtoLC(q, 22, 2);
-    // L->Display();
-    int a69;
-    vector<int> ty = L->getarbitrage(a69);
-    L->remove_invalid(ty);
+    L->Display();
+    // int a69;
+    // vector<int> ty = L->getarbitrage(a69);
+    // L->remove_invalid(ty);
 }

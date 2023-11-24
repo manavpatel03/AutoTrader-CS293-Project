@@ -142,8 +142,6 @@ public:
     {
         for (int i = 0; i < SIZE; i++)
         {
-            if (X->Bucket[i] == NULL)
-                continue;
             destination->addMap(X->Bucket[i]);
         }
     }
@@ -164,10 +162,7 @@ public:
         {
             itr->price += pr;
             itr->validity.push_back(ind);
-            for (int i = 0; i < SIZE; i++)
-            {
-                add2ndto1st(&Store, itr->store);
-            }
+            add2ndto1st(&Store, itr->store);
             itr = itr->next;
         }
         S->addNode(&Store, w, pr);
