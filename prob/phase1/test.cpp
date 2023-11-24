@@ -19,7 +19,7 @@ int main()
         H.addorinsert(to_string(char(i + 97)), i * 100 + 10);
     }
     // L->addtoLC(H, 69, 0);
-    L->addNode(H, a, 233);
+    L->addNode(&H, a, 233);
     // L->addNode(X);
     // L->head = &X;
     // L->tail = &X;
@@ -36,7 +36,7 @@ int main()
     // L->tail->next = NULL;
     for (int i = 0; i < 1; i++)
     {
-        L->addNode(S, j, i * 4 - 2 + 56);
+        L->addNode(&S, j, i * 4 - 2 + 56);
     }
     // L->Display();
     hashMap q;

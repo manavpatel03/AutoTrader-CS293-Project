@@ -22,12 +22,12 @@ public:
     }
 
     // Parameterized constructor
-    Node_ll(int pri, vector<int> validy, hashMap& ste)
+    Node_ll(int pri, vector<int> validy, hashMap *ste)
     {
         price = pri;
         validity = vector<int>(validy);
         next = NULL;
-        store = ste.Mapmaker(&ste);
+        store = ste->Mapmaker(ste);
         // store->inorderTraversal();
         // ste.inorderTraversal();
     }
@@ -40,7 +40,7 @@ public:
         next = NULL;
         // store = node.store->copycall(node.store);
 
-        hashMap* f = node.store->Mapmaker(node.store);
+        hashMap *f = node.store->Mapmaker(node.store);
         store = f;
     }
 };
@@ -91,8 +91,9 @@ public:
         return;
     }
 
-    void addNode(hashMap x, vector<int> y, int z)
+    void addNode(hashMap *x, vector<int> y, int z)
     {
+        // cout << "d0 " << endl;
         Node_ll *newNode = new Node_ll(z, y, x);
 
         if (head == NULL)
@@ -154,7 +155,7 @@ public:
         if (head == NULL)
         {
 
-            addNode(Store, w, pr);
+            addNode(&Store, w, pr);
             return;
         }
         LinkedList *S = duplicateLL();
@@ -163,8 +164,9 @@ public:
         {
             itr->price += pr;
             itr->validity.push_back(ind);
+            itr = itr->next;
         }
-        S->addNode(Store, w, pr);
+        S->addNode(&Store, w, pr);
         tail->next = S->head;
         return;
     }
@@ -180,13 +182,14 @@ public:
         }
         else
         {
-            int i = 0;
+            // int i = 0;
             Node_ll *itr = head;
             while (itr != NULL)
             {
-                cout << i++ << endl;
+                // cout << itr->price << endl;
                 L->addNode(itr->store, itr->validity, itr->price);
-                L->tail->next = NULL;
+                // L->tail->next = NULL;
+                itr = itr->next;
             }
             return L;
         }
