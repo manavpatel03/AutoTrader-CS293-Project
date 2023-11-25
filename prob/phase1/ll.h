@@ -367,7 +367,7 @@ public:
             return false;
         }
         // return false;
-        if (((buy && price > a->price) || (!buy && price < a->price)))
+        if (((buy && price < a->price) || (!buy && price > a->price)))
             return false;
         if (a->Pairs->compmap(Pairs))
         {
