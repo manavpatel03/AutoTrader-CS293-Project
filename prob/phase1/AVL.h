@@ -43,6 +43,32 @@ public:
         return (node);
     }
 
+    bool comp(Node *root)
+    {
+        if (key != root->key || value != root->value)
+            return false;
+        if ((left == NULL && root->left != NULL) || (right == NULL && root->right != NULL))
+            return false;
+        if ((left != NULL && root->left == NULL) || (right != NULL && root->right == NULL))
+            return false;
+        if (left != NULL)
+        {
+            if (left->comp(root->left))
+            {
+                if (right != NULL)
+                {
+                    if (right->comp(root->right))
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            else
+                return false;
+        }
+        return true;
+    }
+
     bool checkq(Node *root)
     {
         if (root == NULL)

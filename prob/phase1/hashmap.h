@@ -46,6 +46,23 @@ public:
              << endl;
     }
 
+    bool compmap(hashMap *A)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (A->Bucket[i] == NULL && Bucket[i] != NULL)
+                return false;
+            if (A->Bucket[i] != NULL && Bucket[i] == NULL)
+                return false;
+            if (A->Bucket[i] != NULL)
+            {
+                if (!A->Bucket[i]->comp(Bucket[i]))
+                    return false;
+            }
+        }
+        return true;
+    }
+
     bool Checkzero()
     {
         for (int i = 0; i < SIZE; i++)
@@ -125,6 +142,7 @@ public:
     void addorinsert(string K, int val)
     {
         int ind = hashVal(K);
+        // cout << &Bucket << endl;
         if (Bucket[ind] == NULL)
         {
             Bucket[ind] = new Node();

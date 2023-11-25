@@ -250,23 +250,32 @@ public:
     {
         Node_ll *current = head;
         Node_ll *a = head;
+        // int die = 0;
         while (current != NULL)
         {
+            // cout << ++die << endl;
             bool chi = 0;
             for (int i = 0; i < used_up.size(); i++)
             {
                 if (binary_search(used_up[i], current->validity))
                 {
-                    a = current->next;
-                    deleteNode(current);
+                    a = current;
+                    current = current->next;
+                    deleteNode(a);
                     chi = 1;
                     break;
                 }
             }
             if (chi)
+            {
+                chi = 0;
                 continue;
-            current = current->next;
+            }
+            if (current != NULL)
+                current = current->next;
         }
+        // cout << "DONE!!" << endl;
+        return;
     }
 
     vector<int> getarbitrage(int &profit)
@@ -299,4 +308,129 @@ public:
         // cout << minnode->validity.size() << endl;
         return minnode->validity;
     }
+};
+
+class Company
+{
+public:
+    hashMap *Pairs;
+    bool valid;
+    int price;
+    // int identifier;
+    bool buy;
+
+    Company()
+    {
+        Pairs = new hashMap();
+        valid = 1;
+        price = 0;
+        buy = 0;
+        // identifier = 0;
+    }
+
+    void insertion(string cmpny, int quant)
+    {
+        valid = 1;
+        // cout << &Pairs << endl;
+        Pairs->addorinsert(cmpny, quant);
+        // price = cost;
+        // buy = buy;
+        return;
+    }
+
+    void insertion(int cost)
+    {
+        price = cost;
+        return;
+    }
+
+    void insertion(char decide)
+    {
+        buy = (decide == 'b');
+        return;
+    }
+
+    bool compareOppsame(Company *a)
+    {
+        if (a->valid == 0 || valid == 0)
+            return false;
+        if (price == a->price)
+        {
+            if (buy == a->buy)
+                return false;
+            else if (a->Pairs->compmap(Pairs))
+            {
+                valid = 0;
+                a->valid = 0;
+                return true;
+            }
+            return false;
+        }
+        // return false;
+        if (((buy && price > a->price) || (!buy && price < a->price)))
+            return false;
+        if (a->Pairs->compmap(Pairs))
+        {
+            valid = 0;
+            // a->valid = 0;
+            return true;
+        }
+        else
+            return false;
+    }
+};
+
+class Com_list
+{
+public:
+    vector<Company *> LCs;
+
+    Com_list()
+    {
+        LCs.resize(0);
+    }
+
+    void addtolist(string cmpny, int quant, int ind)
+    {
+        assert(ind <= LCs.size());
+        if (ind == LCs.size())
+        {
+            Company *s = new Company();
+            // cout << &s->Pairs->Bucket << endl;
+            s->insertion(cmpny, quant);
+            // cout << "gd" << endl;
+            LCs.push_back(s);
+        }
+        else
+        {
+            LCs[ind]->insertion(cmpny, quant);
+        }
+        return;
+    }
+
+    void addtolist(int cost, char fst, int ind)
+    {
+        assert(ind < LCs.size());
+        LCs[ind]->price = cost;
+        LCs[ind]->buy = (fst == 'b');
+    }
+
+    bool checkcancel(Company *S, vector<int> &ret)
+    {
+        for (int i = 0; i < LCs.size(); i++)
+        {
+            if (LCs[i]->compareOppsame(S))
+            {
+                ret.push_back(i);
+                return true;
+            }
+        }
+        return false;
+    }
+    // Company_struct()
+    // {
+    //     // price = 0;
+    //     // buy = 0;
+    //     LCs.resize(1);
+    // }
 };

@@ -184,6 +184,7 @@ int main(int argc, char **argv)
     {
         int ja = 0;
         LinkedList Combinations;
+        Com_list *comlist = new Com_list();
         vector<int> first_elem;
         int i = 0;
         int j = 0;
@@ -222,6 +223,7 @@ int main(int argc, char **argv)
                         price_equal = false;
                         // cout << "this is the value(a) : " << ++ja << cmpny << endl;
                         price = stoi(cmpny);
+                        comlist->addtolist(price, last_char, j);
                         i += 3;
                         j++;
                         break;
@@ -233,6 +235,7 @@ int main(int argc, char **argv)
                     }
 
                     // cout << "this is the value : " << ++ja << quantity << endl;
+                    comlist->addtolist(cmpny, stoi(quantity), j);
                     Storage.addorinsert(cmpny, stoi(quantity));
                     i++;
                     //
@@ -245,16 +248,25 @@ int main(int argc, char **argv)
                 {
                     Storage.makenegev();
                 }
-                // cout << "hi" << endl;
-                // cout << "fsfsdfdfsdfsd" << endl;
-                Combinations.addtoLC(Storage, price, j);
-                // cout << "rizzzzz" << endl;
-                // Combinations.Display();
                 int plchlder;
-                // vector<int> *S = ;
-                vector<int> validyans = Combinations.getarbitrage(plchlder);
-                // cout << "rizzzzz" << endl;
-                // cout << validyans.size();
+                vector<int> validyans;
+                if (comlist->checkcancel(comlist->LCs[j - 1], validyans))
+                {
+                    Combinations.remove_invalid(validyans);
+                    validyans.clear();
+                }
+                else
+                {
+                    Combinations.addtoLC(Storage, price, j - 1);
+                    validyans = Combinations.getarbitrage(plchlder);
+                    // cout << "hi" << endl;
+                    // cout << "fsfsdfdfsdfsd" << endl;
+                    // cout << "rizzzzz" << endl;
+                    // Combinations.Display();
+                    // vector<int> *S = ;
+                    // cout << "rizzzzz" << endl;
+                    // cout << validyans.size();
+                }
                 if (validyans.size() == 0)
                 {
                     cout << "No Trade" << std::endl;
@@ -262,18 +274,20 @@ int main(int argc, char **argv)
                 else
                 {
                     final_profit += plchlder;
-                    for (int u = 0; u < validyans.size(); u++)
+                    for (int u = validyans.size() - 1; u >= 0; u--)
                     {
                         int k = validyans[u];
+                        k = first_elem[k];
                         while (message[k] != '#')
                         {
                             cout << message[k];
-                            if (message[k + 1] == '#')
+                            if (message[k + 2] == '#')
                             {
-                                if (message[k] == 'b')
-                                    cout << 's';
-                                if (message[k] == 's')
-                                    cout << 'b';
+                                if (message[k + 1] == 'b')
+                                    cout << "s#";
+                                else if (message[k + 1] == 's')
+                                    cout << "b#";
+                                break;
                             }
                             k++;
                         }
@@ -281,8 +295,13 @@ int main(int argc, char **argv)
                     }
                 }
                 vector<int> delrange(validyans);
-                Combinations.Display();
+                // cout << "My valid vect : ";
+                // for (int fgh = 0; fgh < validyans.size(); fgh++)
+                //     cout << validyans[fgh] << " ";
+                // cout << endl;
+                // Combinations.Display();
                 Combinations.remove_invalid(delrange);
+                // cout << "done" << endl;
                 // now write LC logic
             }
         }
