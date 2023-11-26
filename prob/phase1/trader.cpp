@@ -324,6 +324,7 @@ int main(int argc, char **argv)
                 // cout << endl;
                 // Combinations.Display();
                 Combinations.remove_invalid(delrange);
+                comlist->removeused(delrange);
                 // cout << "done" << endl;
                 // now write LC logic
             }

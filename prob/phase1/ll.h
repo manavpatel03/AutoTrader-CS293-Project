@@ -152,7 +152,7 @@ public:
         w.push_back(ind);
         if (head == NULL)
         {
-
+            // cout << "dfsfsfsfsdfsdfsdfsfsd";
             addNode(&Store, w, pr);
             return;
         }
@@ -166,13 +166,31 @@ public:
             itr = itr->next;
         }
         S->addNode(&Store, w, pr);
+        // cout << "dfdfsf";
+        // S->Display();
+        // cout << "dfdfsf";
+        // S->Display();
+        // cout << (head == NULL) << endl;
+        // cout << "\n\n\n\n\n1\n\n\n\n";
+        // S->Display();
         if (head == NULL)
         {
             head = S->head;
             tail = S->tail;
         }
-        tail->next = S->head;
-        tail = S->tail;
+        // assert(tail->next == NULL);
+        else
+        {
+
+            // cout << endl
+            //      << "dffsfsdfsdfs" << endl;
+            tail->next = S->head;
+            // assert(tail->next != NULL);
+            tail = S->tail;
+        }
+        // assert(tail->next == S->head);
+        // cout << "2\n\n\n\n\n";
+        // Display();
         return;
     }
 
@@ -220,6 +238,8 @@ public:
         {
             Node_ll *temp = head;
             head = node->next;
+            if (tail == node)
+                tail = NULL;
             delete temp;
         }
         else
@@ -228,6 +248,8 @@ public:
             {
                 prev = prev->next;
             }
+            if (tail == node)
+                tail = prev;
             prev->next = node->next;
         }
     }
@@ -451,6 +473,14 @@ public:
         assert(ind < LCs.size());
         LCs[ind]->price = cost;
         LCs[ind]->buy = (fst == 'b');
+    }
+
+    void removeused(vector<int> &del)
+    {
+        for (int i = 0; i < del.size(); i++)
+        {
+            LCs[del[i]]->valid = 0;
+        }
     }
 
     bool checkcancel(Company *S, vector<int> &ret, bool &same)
