@@ -402,13 +402,13 @@ public:
         {
             if (price == a->price)
             {
-                same = true;
                 if (buy == a->buy)
                     return false;
                 else if (a->Pairs->compmap(Pairs))
                 {
                     valid = 0;
                     a->valid = 0;
+                    same = true;
                     return true;
                 }
                 return false;

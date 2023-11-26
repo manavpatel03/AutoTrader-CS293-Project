@@ -265,6 +265,7 @@ int main(int argc, char **argv)
                     Combinations.remove_invalid(validyans);
                     validyans.clear();
                 }
+                // cout << "same" << same;
                 if (!same)
                 {
                     // cout << "blah" << j << "blah";
