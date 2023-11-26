@@ -395,11 +395,17 @@ public:
         }
         else
         {
-            if (a->Pairs->compmap(Pairs))
+            if (price == a->price)
             {
-                valid = 0;
-                a->valid = 0;
-                return true;
+                if (buy == a->buy)
+                    return false;
+                else if (a->Pairs->compmap(Pairs))
+                {
+                    valid = 0;
+                    a->valid = 0;
+                    return true;
+                }
+                return false;
             }
             return false;
         }
@@ -443,7 +449,7 @@ public:
 
     bool checkcancel(Company *S, vector<int> &ret)
     {
-        for (int i = 0; i < LCs.size(); i++)
+        for (int i = 0; i < LCs.size() - 1; i++)
         {
             if (LCs[i]->compareOppsame(S))
             {
@@ -538,11 +544,11 @@ public:
         return NULL;
     }
 
-    void yo2(char b, hashMap *H, vector<Node2 *> &v)
+    void yo_dec(char b, hashMap *H, vector<Node2 *> &v)
     {
         if (left != NULL)
         {
-            left->yo2(b, H, v);
+            left->yo_dec(b, H, v);
         }
         if (b != buy && mystocks->compmap(H))
         {
@@ -550,15 +556,15 @@ public:
         }
         if (right != NULL)
         {
-            right->yo2(b, H, v);
+            right->yo_dec(b, H, v);
         }
     }
 
-    void yo1(char b, hashMap *H, vector<Node2 *> &v)
+    void yo_inc(char b, hashMap *H, vector<Node2 *> &v)
     {
         if (right != NULL)
         {
-            right->yo1(b, H, v);
+            right->yo_inc(b, H, v);
         }
         if (b != buy && mystocks->compmap(H))
         {
@@ -566,8 +572,12 @@ public:
         }
         if (left != NULL)
         {
-            left->yo1(b, H, v);
+            left->yo_inc(b, H, v);
         }
+    }
+
+    void delnode(Node2 *root)
+    {
     }
 
     // Node2 *dsrch(int cost, hashMap *H, char b)

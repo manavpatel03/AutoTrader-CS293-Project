@@ -151,7 +151,10 @@ int main(int argc, char **argv)
         {
             std::string message = rcv.readIML();
             if (message.find("$") != std::string::npos)
+            {
                 buffer_size_check = false;
+                rcv.terminate();
+            }
             int i = 0;
             while (i < message.length())
             {
@@ -194,7 +197,10 @@ int main(int argc, char **argv)
         {
             std::string message = rcv.readIML();
             if (message.find("$") != std::string::npos)
+            {
                 buffer_size_check = false;
+                rcv.terminate();
+            }
             while (i < message.length())
             {
 
@@ -252,6 +258,9 @@ int main(int argc, char **argv)
                 vector<int> validyans;
                 if (comlist->checkcancel(comlist->LCs[j - 1], validyans))
                 {
+                    // cout << "Removed : ";
+                    // for (int nope = 0; nope < validyans.size(); nope++)
+                    //     cout << validyans[nope] << " " << endl;
                     Combinations.remove_invalid(validyans);
                     validyans.clear();
                 }
@@ -322,7 +331,10 @@ int main(int argc, char **argv)
         {
             std::string message = rcv.readIML();
             if (message.find("$") != std::string::npos)
+            {
                 buffer_size_check = false;
+                rcv.terminate();
+            }
             while (i < message.length())
             {
 
