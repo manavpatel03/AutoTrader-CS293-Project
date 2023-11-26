@@ -308,5 +308,140 @@ int main(int argc, char **argv)
         cout << final_profit;
     }
 
+    if (which == '3')
+    {
+        int ja = 0;
+        LinkedList Combinations;
+        Com_list *comlist = new Com_list();
+        vector<int> first_elem;
+        int i = 0;
+        int j = 0;
+        bool buffer_size_check = true;
+        int final_profit = 0;
+        while (buffer_size_check)
+        {
+            std::string message = rcv.readIML();
+            if (message.find("$") != std::string::npos)
+                buffer_size_check = false;
+            while (i < message.length())
+            {
+
+                char last_char;
+                bool price_equal = 0;
+                hashMap Storage;
+                int price = 0;
+                first_elem.push_back(i);
+                while (message[i] != '#')
+                {
+                    int overall_quant = 0;
+                    std::string cmpny = "";
+                    while (message[i] != 32)
+                    {
+                        if (message[i] >= 48 && message[i] <= 57)
+                            price_equal = true;
+                        cmpny.push_back(message[i]);
+                        i++;
+                    }
+                    // std::cout << cmpny << endl;
+                    i++;
+                    std::string quantity = "";
+                    if (price_equal)
+                    {
+                        string quant_place;
+                        while (message[i] != 32)
+                        {
+                            quant_place.push_back(message[i++]);
+                        }
+                        overall_quant = stoi(quant_place);
+                        last_char = message[i];
+                        // cout << "fdf : " << last_char << endl;
+                        price_equal = false;
+                        // cout << "this is the value(a) : " << ++ja << cmpny << endl;
+                        price = stoi(cmpny);
+                        comlist->addtolist(price, last_char, j);
+                        i += 3;
+                        j++;
+                        break;
+                    }
+                    while (message[i] != 32)
+                    {
+                        quantity.push_back(message[i]);
+                        i++;
+                    }
+
+                    // cout << "this is the value : " << ++ja << quantity << endl;
+                    comlist->addtolist(cmpny, stoi(quantity), j);
+                    Storage.addorinsert(cmpny, stoi(quantity));
+                    i++;
+                    //
+                }
+                if (last_char == 's')
+                {
+                    price *= -1;
+                }
+                if (last_char == 'b')
+                {
+                    Storage.makenegev();
+                }
+                int plchlder;
+                vector<int> validyans;
+                if (comlist->checkcancel(comlist->LCs[j - 1], validyans))
+                {
+                    Combinations.remove_invalid(validyans);
+                    validyans.clear();
+                }
+                else
+                {
+                    Combinations.addtoLC(Storage, price, j - 1);
+                    validyans = Combinations.getarbitrage(plchlder);
+                    // cout << "hi" << endl;
+                    // cout << "fsfsdfdfsdfsd" << endl;
+                    // cout << "rizzzzz" << endl;
+                    // Combinations.Display();
+                    // vector<int> *S = ;
+                    // cout << "rizzzzz" << endl;
+                    // cout << validyans.size();
+                }
+                if (validyans.size() == 0)
+                {
+                    cout << "No Trade" << std::endl;
+                }
+                else
+                {
+                    final_profit += plchlder;
+                    for (int u = validyans.size() - 1; u >= 0; u--)
+                    {
+                        int k = validyans[u];
+                        k = first_elem[k];
+                        while (message[k] != '#')
+                        {
+                            cout << message[k];
+                            if (message[k + 2] == '#')
+                            {
+                                if (message[k + 1] == 'b')
+                                    cout << "s#";
+                                else if (message[k + 1] == 's')
+                                    cout << "b#";
+                                break;
+                            }
+                            k++;
+                        }
+                        cout << endl;
+                    }
+                }
+                vector<int> delrange(validyans);
+                // cout << "My valid vect : ";
+                // for (int fgh = 0; fgh < validyans.size(); fgh++)
+                //     cout << validyans[fgh] << " ";
+                // cout << endl;
+                // Combinations.Display();
+                Combinations.remove_invalid(delrange);
+                // cout << "done" << endl;
+                // now write LC logic
+            }
+        }
+        cout << final_profit;
+    }
+
     // AutoTrader at; // Move this line here
 }

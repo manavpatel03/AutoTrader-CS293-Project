@@ -434,3 +434,97 @@ public:
     //     LCs.resize(1);
     // }
 };
+
+class Node2
+{
+public:
+    Node2 *left;
+    Node2 *right;
+    hashMap *mystocks;
+    int price;
+    int quant;
+    bool buy;
+    // int diff;
+
+    Node2()
+    {
+        left = NULL;
+        right = NULL;
+        mystocks = new hashMap();
+        price = 0;
+        quant = 0;
+        buy = 0;
+        // diff = 0;
+    }
+
+    Node2 *Newnode2(hashMap *M, int cost, int count, char buy)
+    {
+        Node2 *plc = new Node2();
+        plc->left = NULL;
+        plc->right = NULL;
+        plc->mystocks = M;
+        plc->price = cost;
+        plc->quant = count;
+        plc->buy = (buy == 'b');
+        // plc->diff = dif;
+        return plc;
+    }
+
+    void ins(Node2 *newroot)
+    {
+        if (newroot->price > price)
+        {
+            if (right == NULL)
+                right = newroot;
+            else
+                right->ins(newroot);
+        }
+        else
+        {
+            if (left == NULL)
+                left = newroot;
+            else
+                left->ins(newroot);
+        }
+        return;
+    }
+
+    Node2 *isrch(int cost, hashMap *H, char b)
+    {
+        if (price == cost)
+        {
+            if (b != buy)
+            {
+                if (mystocks->compmap(H))
+                {
+                    return this;
+                }
+            }
+        }
+        if (right != NULL)
+            if (cost > price)
+                return right->isrch(price, H, b);
+        if (left != NULL)
+            return left->isrch(cost, H, b);
+        return NULL;
+    }
+
+    // Node2 *dsrch(int cost, hashMap *H, char b)
+    // {
+    //     if (left != NULL)
+    //         return left->isrch(price, H, b);
+    //     if (price == cost)
+    //     {
+    //         if (b != buy)
+    //         {
+    //             if (mystocks->compmap(H))
+    //             {
+    //                 return this;
+    //             }
+    //         }
+    //     }
+    //     if (right != NULL)
+    //         return right->isrch(cost, H, b);
+    //     return NULL;
+    // }
+};
