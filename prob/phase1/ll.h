@@ -166,6 +166,11 @@ public:
             itr = itr->next;
         }
         S->addNode(&Store, w, pr);
+        if (head == NULL)
+        {
+            head = S->head;
+            tail = S->tail;
+        }
         tail->next = S->head;
         tail = S->tail;
         return;
@@ -350,7 +355,7 @@ public:
         return;
     }
 
-    bool compareOppsame(Company *a)
+    bool compareOppsame(Company *a, bool &same)
     {
         // if (a->valid == 0 || valid == 0)
         //     return false;
@@ -397,6 +402,7 @@ public:
         {
             if (price == a->price)
             {
+                same = true;
                 if (buy == a->buy)
                     return false;
                 else if (a->Pairs->compmap(Pairs))
@@ -447,11 +453,11 @@ public:
         LCs[ind]->buy = (fst == 'b');
     }
 
-    bool checkcancel(Company *S, vector<int> &ret)
+    bool checkcancel(Company *S, vector<int> &ret, bool &same)
     {
         for (int i = 0; i < LCs.size() - 1; i++)
         {
-            if (LCs[i]->compareOppsame(S))
+            if (LCs[i]->compareOppsame(S, same))
             {
                 ret.push_back(i);
                 return true;
@@ -476,6 +482,7 @@ public:
     int price;
     int quant;
     bool buy;
+    bool valid;
     // int diff;
 
     Node2()
@@ -498,6 +505,7 @@ public:
         plc->price = cost;
         plc->quant = count;
         plc->buy = (buy == 'b');
+        plc->valid = 1;
         // plc->diff = dif;
         return plc;
     }
@@ -521,15 +529,16 @@ public:
         return;
     }
 
-    Node2 *isrch(int cost, hashMap *H, char b)
+    bool isrch(int cost, hashMap *H, char b)
     {
         if (price == cost)
         {
             if (b != buy)
             {
-                if (mystocks->compmap(H))
+                if (mystocks->compmap(H) && valid)
                 {
-                    return this;
+                    valid = 0;
+                    return true;
                 }
             }
         }
@@ -541,7 +550,7 @@ public:
         {
             return right->isrch(cost, H, b);
         }
-        return NULL;
+        return false;
     }
 
     void yo_dec(char b, hashMap *H, vector<Node2 *> &v)
@@ -550,7 +559,7 @@ public:
         {
             left->yo_dec(b, H, v);
         }
-        if (b != buy && mystocks->compmap(H))
+        if (b != buy && mystocks->compmap(H) && valid)
         {
             v.push_back(this);
         }
@@ -566,7 +575,7 @@ public:
         {
             right->yo_inc(b, H, v);
         }
-        if (b != buy && mystocks->compmap(H))
+        if (b != buy && mystocks->compmap(H) && valid)
         {
             v.push_back(this);
         }
@@ -574,10 +583,6 @@ public:
         {
             left->yo_inc(b, H, v);
         }
-    }
-
-    void delnode(Node2 *root)
-    {
     }
 
     // Node2 *dsrch(int cost, hashMap *H, char b)

@@ -255,17 +255,19 @@ int main(int argc, char **argv)
                     Storage.makenegev();
                 }
                 int plchlder;
+                bool same = false;
                 vector<int> validyans;
-                if (comlist->checkcancel(comlist->LCs[j - 1], validyans))
+                if (comlist->checkcancel(comlist->LCs[j - 1], validyans, same))
                 {
-                    // cout << "Removed : ";
+                    // cout << "Removeda : ";
                     // for (int nope = 0; nope < validyans.size(); nope++)
                     //     cout << validyans[nope] << " " << endl;
                     Combinations.remove_invalid(validyans);
                     validyans.clear();
                 }
-                else
+                if (!same)
                 {
+                    // cout << "blah" << j << "blah";
                     Combinations.addtoLC(Storage, price, j - 1);
                     validyans = Combinations.getarbitrage(plchlder);
                     // cout << "hi" << endl;
@@ -276,6 +278,11 @@ int main(int argc, char **argv)
                     // cout << "rizzzzz" << endl;
                     // cout << validyans.size();
                 }
+                // cout << "No : " << j << endl;
+                // Combinations.Display();
+                // cout << endl
+                //      << "end : " << j << endl;
+
                 if (validyans.size() == 0)
                 {
                     cout << "No Trade" << std::endl;
@@ -304,6 +311,12 @@ int main(int argc, char **argv)
                     }
                 }
                 vector<int> delrange(validyans);
+                // if (validyans.size() > 0)
+                // {
+                //     cout << "Removed : ";
+                //     for (int nope = 0; nope < validyans.size(); nope++)
+                //         cout << validyans[nope] << " ";
+                // }
                 // cout << "My valid vect : ";
                 // for (int fgh = 0; fgh < validyans.size(); fgh++)
                 //     cout << validyans[fgh] << " ";
@@ -320,13 +333,16 @@ int main(int argc, char **argv)
     if (which == '3')
     {
         int ja = 0;
-        LinkedList Combinations;
-        Com_list *comlist = new Com_list();
+        // LinkedList Combinations;
+        // Com_list *comlist = new Com_list();
         vector<int> first_elem;
         int i = 0;
         int j = 0;
         bool buffer_size_check = true;
         int final_profit = 0;
+        Node2 *root = NULL;
+        Node2 *initializer = new Node2();
+        Node2 *aree;
         while (buffer_size_check)
         {
             std::string message = rcv.readIML();
@@ -340,11 +356,11 @@ int main(int argc, char **argv)
 
                 char last_char;
                 bool price_equal = 0;
-                hashMap Storage;
                 int price = 0;
                 first_elem.push_back(i);
                 while (message[i] != '#')
                 {
+                    hashMap *Storage = new hashMap();
                     int overall_quant = 0;
                     std::string cmpny = "";
                     while (message[i] != 32)
@@ -364,13 +380,25 @@ int main(int argc, char **argv)
                         {
                             quant_place.push_back(message[i++]);
                         }
+                        i++;
                         overall_quant = stoi(quant_place);
+                        // cout << overall_quant;
                         last_char = message[i];
                         // cout << "fdf : " << last_char << endl;
                         price_equal = false;
                         // cout << "this is the value(a) : " << ++ja << cmpny << endl;
                         price = stoi(cmpny);
-                        comlist->addtolist(price, last_char, j);
+                        // comlist->addtolist(price, last_char, j);
+                        if (j == 0 || root == NULL)
+                        {
+                            root = initializer->Newnode2(Storage, price, overall_quant, last_char);
+                            aree = root;
+                        }
+                        else
+                        {
+                            aree = initializer->Newnode2(Storage, price, overall_quant, last_char);
+                            // root->ins(aree);
+                        }
                         i += 3;
                         j++;
                         break;
@@ -382,74 +410,73 @@ int main(int argc, char **argv)
                     }
 
                     // cout << "this is the value : " << ++ja << quantity << endl;
-                    comlist->addtolist(cmpny, stoi(quantity), j);
-                    Storage.addorinsert(cmpny, stoi(quantity));
+                    // comlist->addtolist(cmpny, stoi(quantity), j);
+                    Storage->addorinsert(cmpny, stoi(quantity));
                     i++;
                     //
                 }
-                if (last_char == 's')
-                {
-                    price *= -1;
-                }
-                if (last_char == 'b')
-                {
-                    Storage.makenegev();
-                }
                 int plchlder;
-                vector<int> validyans;
-                if (comlist->checkcancel(comlist->LCs[j - 1], validyans))
-                {
-                    Combinations.remove_invalid(validyans);
-                    validyans.clear();
-                }
-                else
-                {
-                    Combinations.addtoLC(Storage, price, j - 1);
-                    validyans = Combinations.getarbitrage(plchlder);
-                    // cout << "hi" << endl;
-                    // cout << "fsfsdfdfsdfsd" << endl;
-                    // cout << "rizzzzz" << endl;
-                    // Combinations.Display();
-                    // vector<int> *S = ;
-                    // cout << "rizzzzz" << endl;
-                    // cout << validyans.size();
-                }
-                if (validyans.size() == 0)
+                vector<Node2 *> validyans;
+                // if (comlist->checkcancel(comlist->LCs[j - 1], validyans))
+                // {
+                //     Combinations.remove_invalid(validyans);
+                //     validyans.clear();
+                // }
+                // else
+                // {
+                //     Combinations.addtoLC(Storage, price, j - 1);
+                //     validyans = Combinations.getarbitrage(plchlder);
+                //     // cout << "hi" << endl;
+                //     // cout << "fsfsdfdfsdfsd" << endl;
+                //     // cout << "rizzzzz" << endl;
+                //     // Combinations.Display();
+                //     // vector<int> *S = ;
+                //     // cout << "rizzzzz" << endl;
+                //     // cout << validyans.size();
+                // }
+                if (root->isrch(aree->price, aree->mystocks, last_char))
                 {
                     cout << "No Trade" << std::endl;
+                    continue;
                 }
+
                 else
                 {
-                    final_profit += plchlder;
-                    for (int u = validyans.size() - 1; u >= 0; u--)
+                    if (last_char == 'b')
                     {
-                        int k = validyans[u];
-                        k = first_elem[k];
-                        while (message[k] != '#')
+                        root->yo_dec(last_char, aree->mystocks, validyans);
+                        if (validyans.size() == 0)
                         {
-                            cout << message[k];
-                            if (message[k + 2] == '#')
-                            {
-                                if (message[k + 1] == 'b')
-                                    cout << "s#";
-                                else if (message[k + 1] == 's')
-                                    cout << "b#";
-                                break;
-                            }
-                            k++;
+                            root->ins(aree);
                         }
-                        cout << endl;
+                        else
+                        {
+                            for (int i = 0; i < validyans.size(); i++)
+                            {
+                            }
+                        }
                     }
+                    // final_profit += plchlder;
+                    // for (int u = validyans.size() - 1; u >= 0; u--)
+                    // {
+                    //     int k = validyans[u];
+                    //     k = first_elem[k];
+                    //     while (message[k] != '#')
+                    //     {
+                    //         cout << message[k];
+                    //         if (message[k + 2] == '#')
+                    //         {
+                    //             if (message[k + 1] == 'b')
+                    //                 cout << "s#";
+                    //             else if (message[k + 1] == 's')
+                    //                 cout << "b#";
+                    //             break;
+                    //         }
+                    //         k++;
+                    //     }
+                    //     cout << endl;
+                    // }
                 }
-                vector<int> delrange(validyans);
-                // cout << "My valid vect : ";
-                // for (int fgh = 0; fgh < validyans.size(); fgh++)
-                //     cout << validyans[fgh] << " ";
-                // cout << endl;
-                // Combinations.Display();
-                Combinations.remove_invalid(delrange);
-                // cout << "done" << endl;
-                // now write LC logic
             }
         }
         cout << final_profit;

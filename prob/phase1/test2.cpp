@@ -19,5 +19,5 @@ int main()
         Node2 *q = p->Newnode2(w, (i - 400) * (200 - i) + 1, i + 2, 'b');
         p->ins(q);
     }
-    cout << p->isrch(10001, w, 's')->buy;
+    // cout << p->isrch(10001, w, 's')->buy;
 }
