@@ -18,7 +18,6 @@ int main()
     {
         Node2 *q = p->Newnode2(w, (i - 400) * (200 - i) + 1, i + 2, 'b');
         p->ins(q);
-        if(i == 534) cost = (i - 400) * (200 - i) + 1;
     }
-    cout << p->isrch(cost, w, 's');
+    cout << p->isrch(10001, w, 's')->buy;
 }

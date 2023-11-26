@@ -352,13 +352,50 @@ public:
 
     bool compareOppsame(Company *a)
     {
+        // if (a->valid == 0 || valid == 0)
+        //     return false;
+        // if (price == a->price)
+        // {
+        //     if (buy == a->buy)
+        //         return false;
+        //     else if (a->Pairs->compmap(Pairs))
+        //     {
+        //         valid = 0;
+        //         a->valid = 0;
+        //         return true;
+        //     }
+        //     return false;
+        // }
+        // // return false;
+        // if (((buy && price < a->price) || (!buy && price > a->price)))
+        //     return false;
+        // if (a->Pairs->compmap(Pairs))
+        // {
+        //     valid = 0;
+        //     // a->valid = 0;
+        //     return true;
+        // }
+        // else
+        //     return false;
+
         if (a->valid == 0 || valid == 0)
             return false;
-        if (price == a->price)
+        if (buy == a->buy)
         {
-            if (buy == a->buy)
+            if (((buy && price < a->price) || (!buy && price > a->price)))
                 return false;
-            else if (a->Pairs->compmap(Pairs))
+            if (a->Pairs->compmap(Pairs))
+            {
+                valid = 0;
+                // a->valid = 0;
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+        {
+            if (a->Pairs->compmap(Pairs))
             {
                 valid = 0;
                 a->valid = 0;
@@ -366,17 +403,6 @@ public:
             }
             return false;
         }
-        // return false;
-        if (((buy && price < a->price) || (!buy && price > a->price)))
-            return false;
-        if (a->Pairs->compmap(Pairs))
-        {
-            valid = 0;
-            // a->valid = 0;
-            return true;
-        }
-        else
-            return false;
     }
 };
 
@@ -501,12 +527,47 @@ public:
                 }
             }
         }
-        if (right != NULL)
-            if (cost > price)
-                return right->isrch(price, H, b);
-        if (left != NULL)
+        if (cost < price && left != NULL)
+        {
             return left->isrch(cost, H, b);
+        }
+        if (cost > price && right != NULL)
+        {
+            return right->isrch(cost, H, b);
+        }
         return NULL;
+    }
+
+    void yo2(char b, hashMap *H, vector<Node2 *> &v)
+    {
+        if (left != NULL)
+        {
+            left->yo2(b, H, v);
+        }
+        if (b != buy && mystocks->compmap(H))
+        {
+            v.push_back(this);
+        }
+        if (right != NULL)
+        {
+            right->yo2(b, H, v);
+        }
+    }
+
+    void yo1(char b, hashMap *H, vector<Node2 *> &v)
+    {
+        if (right != NULL)
+        {
+            right->yo1(b, H, v);
+        }
+        if (b != buy && mystocks->compmap(H))
+        {
+            v.push_back(this);
+        }
+        if (left != NULL)
+        {
+            left->yo1(b, H, v);
+        }
     }
 
     // Node2 *dsrch(int cost, hashMap *H, char b)

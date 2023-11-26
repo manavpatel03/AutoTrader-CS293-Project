@@ -2,9 +2,4 @@ Receiver is listening on port 8878
 No Trade
 No Trade
 No Trade
-No Trade
-X 2 Y 2 Z 2 12 b#
-X 1 Z 2 18 s#
-X 1 Y 2 5 s#
-No Trade
-11
+0
