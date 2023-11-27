@@ -511,6 +511,7 @@ public:
     hashMap *mystocks;
     int price;
     int quant;
+    int j;
     bool buy;
     bool valid;
     // int diff;
@@ -523,10 +524,11 @@ public:
         price = 0;
         quant = 0;
         buy = 0;
+        j = 0;
         // diff = 0;
     }
 
-    Node2 *Newnode2(hashMap *M, int cost, int count, char buy)
+    Node2 *Newnode2(hashMap *M, int cost, int count, char buy, int jval)
     {
         Node2 *plc = new Node2();
         plc->left = NULL;
@@ -536,6 +538,7 @@ public:
         plc->quant = count;
         plc->buy = (buy == 'b');
         plc->valid = 1;
+        plc->j = jval;
         // plc->diff = dif;
         return plc;
     }

@@ -393,12 +393,12 @@ int main(int argc, char **argv)
                         // comlist->addtolist(price, last_char, j);
                         if (j == 0 || root == NULL)
                         {
-                            root = initializer->Newnode2(Storage, price, overall_quant, last_char);
+                            root = initializer->Newnode2(Storage, price, overall_quant, last_char, j);
                             aree = root;
                         }
                         else
                         {
-                            aree = initializer->Newnode2(Storage, price, overall_quant, last_char);
+                            aree = initializer->Newnode2(Storage, price, overall_quant, last_char, j);
                             // root->ins(aree);
                         }
                         i += 3;
@@ -453,8 +453,100 @@ int main(int argc, char **argv)
                         }
                         else
                         {
+                            int threshold = aree->quant;
                             for (int i = 0; i < validyans.size(); i++)
                             {
+                                if (validyans[i]->quant < threshold)
+                                {
+                                    int k = validyans[i]->j;
+                                    while (message[k] != '#')
+                                    {
+                                        cout << message[k];
+                                        if (message[k + 2] == '#')
+                                        {
+                                            if (message[k + 1] == 'b')
+                                                cout << "s#";
+                                            else if (message[k + 1] == 's')
+                                                cout << "b#";
+                                            break;
+                                        }
+                                        k++;
+                                    }
+                                    cout << endl;
+                                    threshold -= validyans[i]->quant;
+                                }
+                                else
+                                {
+                                    int k = aree->j;
+                                    while (message[k] != '#')
+                                    {
+                                        cout << message[k];
+                                        if (message[k + 2] == '#')
+                                        {
+                                            if (message[k + 1] == 'b')
+                                                cout << "s#";
+                                            else if (message[k + 1] == 's')
+                                                cout << "b#";
+                                            break;
+                                        }
+                                        k++;
+                                    }
+                                    cout << endl;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (last_char == 's')
+                    {
+                        root->yo_inc(last_char, aree->mystocks, validyans);
+                        if (validyans.size() == 0)
+                        {
+                            root->ins(aree);
+                        }
+                        else
+                        {
+                            int threshold = aree->quant;
+                            for (int i = 0; i < validyans.size(); i++)
+                            {
+                                if (validyans[i]->quant < threshold)
+                                {
+                                    int k = validyans[i]->j;
+                                    while (message[k] != '#')
+                                    {
+                                        cout << message[k];
+                                        if (message[k + 2] == '#')
+                                        {
+                                            if (message[k + 1] == 'b')
+                                                cout << "s#";
+                                            else if (message[k + 1] == 's')
+                                                cout << "b#";
+                                            break;
+                                        }
+                                        k++;
+                                    }
+                                    cout << endl;
+                                    threshold -= validyans[i]->quant;
+                                }
+                                else
+                                {
+                                    int k = aree->j;
+                                    while (message[k] != '#')
+                                    {
+                                        cout << message[k];
+                                        if (message[k + 2] == '#')
+                                        {
+                                            if (message[k + 1] == 'b')
+                                                cout << "s#";
+                                            else if (message[k + 1] == 's')
+                                                cout << "b#";
+                                            break;
+                                        }
+                                        k++;
+                                    }
+                                    cout << endl;
+                                    break;
+                                }
                             }
                         }
                     }
