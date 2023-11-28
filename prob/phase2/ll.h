@@ -711,10 +711,16 @@ public:
         // assert(A->in_time <= vect.size());
         if (vect.size() <= A->in_time)
         {
-            int i = vect.size();
+            vect.resize(A->in_time + 1, NULL);
+            vect[A->in_time] = A;
         }
         else
-            vect[A->in_time]->ins(A);
+        {
+            if (vect[A->in_time] != NULL)
+                vect[A->in_time]->ins(A);
+            else
+                vect[A->in_time] = A;
+        }
         return;
     }
 
@@ -757,7 +763,7 @@ public:
                             // X = Res[i];
                             if (q <= 0)
                                 return;
-                            cout << x->Broke << endl;
+                            // cout << x->Broke << endl;
                             Deals.push_back(Res[i]);
                             if (q < Res[i]->quant)
                                 return;
@@ -777,7 +783,7 @@ public:
                 {
                     bool done = 1;
                     // Res.push_back(vect[i]->yo_inc(b, H));
-                    vect[i]->yo_dec('b', x->mystocks, done, Res, x->in_time);
+                    vect[i]->yo_inc('s', x->mystocks, done, Res, x->in_time);
                 }
             }
             if (Res.size() == 0)
@@ -798,7 +804,7 @@ public:
                             // X = Res[i];
                             if (q <= 0)
                                 return;
-                            cout << x->Broke << endl;
+                            // cout << x->Broke << endl;
                             Deals.push_back(Res[i]);
                             if (q < Res[i]->quant)
                                 return;

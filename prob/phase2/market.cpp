@@ -113,92 +113,92 @@ void market::start()
         myorders.Bestdeal(S, Dealholder);
         if (Dealholder.size() == 0)
         {
-            cout << "I am here" << endl;
+            // cout << "I am here" << endl;
             myorders.insert(S);
         }
-        // else
-        // {
-        //     for (int i = 0; i < Dealholder.size(); i++)
-        //     {
-        //         if (S->quant == min(S->quant, Dealholder[i]->quant))
-        //         {
-        //             Dealholder[i]->quant -= S->quant;
-        //             S->quant = 0;
-        //             if (S->buy)
-        //             {
-        //                 cout << S->Broke << " purchased " << li_co_qu << " share of ";
-        //                 if (stocks1.size() == 1)
-        //                 {
-        //                     cout << stocks1[0] << " from " << Dealholder[i]->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
-        //                 }
-        //                 else
-        //                 {
-        //                     for (int k = 0; k < stocks1.size(); k++)
-        //                     {
-        //                         cout << stocks1[k] << " " << stocks2[k] << " ";
-        //                     }
-        //                     cout << "from " << Dealholder[i]->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
-        //                 }
-        //             }
-        //             else
-        //             {
-        //                 cout << Dealholder[i]->Broke << " purchased " << li_co_qu << " share of ";
-        //                 if (stocks1.size() == 1)
-        //                 {
-        //                     cout << stocks1[0] << " from " << S->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
-        //                 }
-        //                 else
-        //                 {
-        //                     for (int k = 0; k < stocks1.size(); k++)
-        //                     {
-        //                         cout << stocks1[k] << " " << stocks2[k] << " ";
-        //                     }
-        //                     cout << "from " << S->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
-        //                 }
-        //             }
-        //         }
-        //         else
-        //         {
-        //             Dealholder[i]->valid = 0;
-        //             S->quant -= Dealholder[i]->quant;
-        //             if (S->buy)
-        //             {
-        //                 cout << S->Broke << " purchased " << Dealholder[i]->quant << " share of ";
-        //                 if (stocks1.size() == 1)
-        //                 {
-        //                     cout << stocks1[0] << " from " << Dealholder[i]->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
-        //                 }
-        //                 else
-        //                 {
-        //                     for (int k = 0; k < stocks1.size(); k++)
-        //                     {
-        //                         cout << stocks1[k] << " " << stocks2[k] << " ";
-        //                     }
-        //                     cout << "from " << Dealholder[i]->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
-        //                 }
-        //             }
-        //             else
-        //             {
-        //                 cout << Dealholder[i]->Broke << " purchased " << Dealholder[i]->quant << " share of ";
-        //                 if (stocks1.size() == 1)
-        //                 {
-        //                     cout << stocks1[0] << " from " << S->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
-        //                 }
-        //                 else
-        //                 {
-        //                     for (int k = 0; k < stocks1.size(); k++)
-        //                     {
-        //                         cout << stocks1[k] << " " << stocks2[k] << " ";
-        //                     }
-        //                     cout << "from " << S->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     if (S->quant > 0)
-        //     {
-        //         myorders.insert(S);
-        //     }
-        // }
+        else
+        {
+            for (int i = 0; i < Dealholder.size(); i++)
+            {
+                if (S->quant == min(S->quant, Dealholder[i]->quant))
+                {
+                    Dealholder[i]->quant -= S->quant;
+                    S->quant = 0;
+                    if (S->buy)
+                    {
+                        cout << S->Broke << " purchased " << li_co_qu << " share of ";
+                        if (stocks1.size() == 1)
+                        {
+                            cout << stocks1[0] << " from " << Dealholder[i]->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
+                        }
+                        else
+                        {
+                            for (int k = 0; k < stocks1.size(); k++)
+                            {
+                                cout << stocks1[k] << " " << stocks2[k] << " ";
+                            }
+                            cout << "from " << Dealholder[i]->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
+                        }
+                    }
+                    else
+                    {
+                        cout << Dealholder[i]->Broke << " purchased " << li_co_qu << " share of ";
+                        if (stocks1.size() == 1)
+                        {
+                            cout << stocks1[0] << " from " << S->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
+                        }
+                        else
+                        {
+                            for (int k = 0; k < stocks1.size(); k++)
+                            {
+                                cout << stocks1[k] << " " << stocks2[k] << " ";
+                            }
+                            cout << "from " << S->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
+                        }
+                    }
+                }
+                else
+                {
+                    Dealholder[i]->valid = 0;
+                    S->quant -= Dealholder[i]->quant;
+                    if (S->buy)
+                    {
+                        cout << S->Broke << " purchased " << Dealholder[i]->quant << " share of ";
+                        if (stocks1.size() == 1)
+                        {
+                            cout << stocks1[0] << " from " << Dealholder[i]->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
+                        }
+                        else
+                        {
+                            for (int k = 0; k < stocks1.size(); k++)
+                            {
+                                cout << stocks1[k] << " " << stocks2[k] << " ";
+                            }
+                            cout << "from " << Dealholder[i]->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
+                        }
+                    }
+                    else
+                    {
+                        cout << Dealholder[i]->Broke << " purchased " << Dealholder[i]->quant << " share of ";
+                        if (stocks1.size() == 1)
+                        {
+                            cout << stocks1[0] << " from " << S->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
+                        }
+                        else
+                        {
+                            for (int k = 0; k < stocks1.size(); k++)
+                            {
+                                cout << stocks1[k] << " " << stocks2[k] << " ";
+                            }
+                            cout << "from " << S->Broke << " for $" << Dealholder[i]->price << "/share" << endl;
+                        }
+                    }
+                }
+            }
+            if (S->quant > 0)
+            {
+                myorders.insert(S);
+            }
+        }
     }
 }
