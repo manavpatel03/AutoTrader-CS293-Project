@@ -509,10 +509,12 @@ public:
     Node2 *left;
     Node2 *right;
     hashMap *mystocks;
+    Node2 *ll_next;
     int price;
     int quant;
     int j;
     bool buy;
+    string Broke;
     bool valid;
     // int diff;
 
@@ -521,9 +523,11 @@ public:
         left = NULL;
         right = NULL;
         mystocks = new hashMap();
+        ll_next = NULL;
         price = 0;
         quant = 0;
         buy = 0;
+        Broke.assign("");
         j = 0;
         // diff = 0;
     }
@@ -537,8 +541,10 @@ public:
         plc->price = cost;
         plc->quant = count;
         plc->buy = (buy == 'b');
+        plc->ll_next = NULL;
         plc->valid = 1;
         plc->j = jval;
+        plc->Broke.assign("");
         // plc->diff = dif;
         return plc;
     }
@@ -551,6 +557,13 @@ public:
                 right = newroot;
             else
                 right->ins(newroot);
+        }
+        if (newroot->price == price)
+        {
+            Node2 *itr = ll_next;
+            while (itr != NULL)
+                itr = itr->ll_next;
+            itr->ll_next = newroot;
         }
         else
         {
@@ -566,13 +579,18 @@ public:
     {
         if (price == cost)
         {
-            if (b != buy)
+            Node2 *itr = this;
+            while (itr != NULL)
             {
-                if (mystocks->compmap(H) && valid)
+                if (b != itr->buy)
                 {
-                    valid = 0;
-                    return true;
+                    if (itr->mystocks->compmap(H) && itr->valid)
+                    {
+                        itr->valid = 0;
+                        return true;
+                    }
                 }
+                itr = itr->ll_next;
             }
         }
         if (cost < price && left != NULL)
@@ -590,33 +608,69 @@ public:
     {
         if (left != NULL)
         {
-            return left->yo_dec(b, H);
+            Node2 *x = left->yo_dec(b, H);
+            if (x != NULL)
+                return x;
         }
-        if (b != buy && mystocks->compmap(H) && valid)
+        vector<Node2 *> my_node;
+        vector<string> my_strings;
+        Node2 *itr = this;
+        while (itr != NULL)
         {
-            // v.push_back(this);
-            return this;
+            if (itr->valid && itr->mystocks->compmap(H) && itr->buy != b)
+            {
+                my_node.push_back(itr);
+                my_strings.push_back(itr->Broke);
+            }
+            itr = itr->ll_next;
         }
-        if (right != NULL)
+        if (my_node.size() == 0)
         {
-            right->yo_dec(b, H);
+            if (right != NULL)
+                return right->yo_dec(b, H);
+            else
+                return NULL;
         }
+        else
+        {
+            int ret = min(my_strings);
+            return my_node[ret];
+        }
+
+        // v.push_back(this);
     }
 
     Node2 *yo_inc(char b, hashMap *H)
     {
         if (right != NULL)
         {
-            return right->yo_inc(b, H);
+            Node2 *x = right->yo_dec(b, H);
+            if (x != NULL)
+                return x;
         }
-        if (b != buy && mystocks->compmap(H) && valid)
+        vector<Node2 *> my_node;
+        vector<string> my_strings;
+        Node2 *itr = this;
+        while (itr != NULL)
         {
-            // v.push_back(this);
-            return this;
+            if (itr->valid && itr->mystocks->compmap(H) && itr->buy != b)
+            {
+                my_node.push_back(itr);
+                my_strings.push_back(itr->Broke);
+            }
+            itr = itr->ll_next;
         }
-        if (left != NULL)
+        if (my_node.size() == 0)
         {
-            return left->yo_inc(b, H);
+            if (left != NULL)
+                return left->yo_dec(b, H);
+            else
+                return NULL;
+        }
+        else
+        {
+            int ret = min(my_strings);
+            return my_node[ret];
         }
     }
 
@@ -725,3 +779,14 @@ public:
         }
     }
 };
+
+int min(vector<string> &S)
+{
+    int min = 0;
+    for (int i = 1; i < S.size(); i++)
+    {
+        if (S[i] < S[min])
+            min = i;
+    }
+    return min;
+}
