@@ -766,124 +766,112 @@ public:
             }
         }
     }
+    int compareNodess(const Node2 *a, const Node2 *b)
+    {
+        // Sort by price (decreasing)
+        if (a->price != b->price)
+        {
+            return a->price < b->price ? -1 : 1;
+        }
+
+        // If prices are equal, sort by in_time (increasing)
+        if (a->in_time != b->in_time)
+        {
+            return a->in_time < b->in_time ? -1 : 1;
+        }
+
+        // If in_time is also equal, sort alphabetically by Broke
+        return a->Broke.compare(b->Broke);
+    }
+
+    int compareNodesb(const Node2 *a, const Node2 *b)
+    {
+        // Sort by price (decreasing)
+        if (a->price != b->price)
+        {
+            return a->price > b->price ? -1 : 1;
+        }
+
+        // If prices are equal, sort by in_time (increasing)
+        if (a->in_time != b->in_time)
+        {
+            return a->in_time < b->in_time ? -1 : 1;
+        }
+
+        // If in_time is also equal, sort alphabetically by Broke
+        return a->Broke.compare(b->Broke);
+    }
+
+    // Quicksort partition function
+    int partition(std::vector<Node2 *> &nodes, int low, int high)
+    {
+        Node2 *pivot = nodes[high];
+        int i = low - 1;
+
+        for (int j = low; j <= high - 1; j++)
+        {
+            if (compareNodesb(nodes[j], pivot) == -1)
+            {
+                i++;
+                std::swap(nodes[i], nodes[j]);
+            }
+        }
+
+        std::swap(nodes[i + 1], nodes[high]);
+        return i + 1;
+    }
+
+    int partition2(std::vector<Node2 *> &nodes, int low, int high)
+    {
+        Node2 *pivot = nodes[high];
+        int i = low - 1;
+
+        for (int j = low; j <= high - 1; j++)
+        {
+            if (compareNodess(nodes[j], pivot) == -1)
+            {
+                i++;
+                std::swap(nodes[i], nodes[j]);
+            }
+        }
+
+        std::swap(nodes[i + 1], nodes[high]);
+        return i + 1;
+    }
+
+    // Quicksort function
+    void quicksort(std::vector<Node2 *> &nodes, int low, int high)
+    {
+        if (low < high)
+        {
+            int pi = partition(nodes, low, high);
+
+            quicksort(nodes, low, pi - 1);
+            quicksort(nodes, pi + 1, high);
+        }
+    }
+
+    void quicksort2(std::vector<Node2 *> &nodes, int low, int high)
+    {
+        if (low < high)
+        {
+            int pi = partition2(nodes, low, high);
+
+            quicksort2(nodes, low, pi - 1);
+            quicksort2(nodes, pi + 1, high);
+        }
+    }
+
+    // Function to sort vector of Node2*
+    void sortNodes(std::vector<Node2 *> &nodes, bool b)
+    {
+        if (b)
+        {
+            quicksort(nodes, 0, nodes.size() - 1);
+        }
+        else
+        {
+            quicksort2(nodes, 0, nodes.size() - 1);
+        }
+    }
 };
-
-int min(vector<string> &S)
-{
-    int min = 0;
-    for (int i = 1; i < S.size(); i++)
-    {
-        if (S[i] < S[min])
-            min = i;
-    }
-    return min;
-}
-
-int compareNodess(const Node2 *a, const Node2 *b)
-{
-    // Sort by price (decreasing)
-    if (a->price != b->price)
-    {
-        return a->price < b->price ? -1 : 1;
-    }
-
-    // If prices are equal, sort by in_time (increasing)
-    if (a->in_time != b->in_time)
-    {
-        return a->in_time < b->in_time ? -1 : 1;
-    }
-
-    // If in_time is also equal, sort alphabetically by Broke
-    return a->Broke.compare(b->Broke);
-}
-
-int compareNodesb(const Node2 *a, const Node2 *b)
-{
-    // Sort by price (decreasing)
-    if (a->price != b->price)
-    {
-        return a->price > b->price ? -1 : 1;
-    }
-
-    // If prices are equal, sort by in_time (increasing)
-    if (a->in_time != b->in_time)
-    {
-        return a->in_time < b->in_time ? -1 : 1;
-    }
-
-    // If in_time is also equal, sort alphabetically by Broke
-    return a->Broke.compare(b->Broke);
-}
-
-// Quicksort partition function
-int partition(std::vector<Node2 *> &nodes, int low, int high)
-{
-    Node2 *pivot = nodes[high];
-    int i = low - 1;
-
-    for (int j = low; j <= high - 1; j++)
-    {
-        if (compareNodesb(nodes[j], pivot) == -1)
-        {
-            i++;
-            std::swap(nodes[i], nodes[j]);
-        }
-    }
-
-    std::swap(nodes[i + 1], nodes[high]);
-    return i + 1;
-}
-
-int partition2(std::vector<Node2 *> &nodes, int low, int high)
-{
-    Node2 *pivot = nodes[high];
-    int i = low - 1;
-
-    for (int j = low; j <= high - 1; j++)
-    {
-        if (compareNodess(nodes[j], pivot) == -1)
-        {
-            i++;
-            std::swap(nodes[i], nodes[j]);
-        }
-    }
-
-    std::swap(nodes[i + 1], nodes[high]);
-    return i + 1;
-}
-
-// Quicksort function
-void quicksort(std::vector<Node2 *> &nodes, int low, int high)
-{
-    if (low < high)
-    {
-        int pi = partition(nodes, low, high);
-
-        quicksort(nodes, low, pi - 1);
-        quicksort(nodes, pi + 1, high);
-    }
-}
-
-void quicksort2(std::vector<Node2 *> &nodes, int low, int high)
-{
-    if (low < high)
-    {
-        int pi = partition2(nodes, low, high);
-
-        quicksort2(nodes, low, pi - 1);
-        quicksort2(nodes, pi + 1, high);
-    }
-}
-
-// Function to sort vector of Node2*
-void sortNodes(std::vector<Node2 *> &nodes, bool b)
-{
-    if (b)
-    {
-        quicksort(nodes, 0, nodes.size() - 1);
-    }
-    else
-    {
-        quicksort2(nodes, 0, nodes.size() - 1);
-    }
-}
