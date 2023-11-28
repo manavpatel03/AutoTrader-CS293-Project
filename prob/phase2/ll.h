@@ -625,6 +625,7 @@ public:
 
     void yo_dec(char b, hashMap *H, bool done, vector<Node2 *> &pusher, int intime)
     {
+        bool check = (b == 'b');
         if (!done)
             return;
         if (left != NULL)
@@ -634,7 +635,7 @@ public:
         Node2 *itr = this;
         while (itr != NULL)
         {
-            if (b != itr->buy && itr->mystocks->compmap(H) && itr->valid && itr->out_time >= intime)
+            if (check != itr->buy && itr->mystocks->compmap(H) && itr->valid && itr->out_time >= intime)
             {
                 done = false;
                 pusher.push_back(itr);
@@ -651,8 +652,9 @@ public:
 
     void yo_inc(char b, hashMap *H, bool done, vector<Node2 *> &pusher, int intime)
     {
-        if (!done)
-            return;
+        bool check = (b == 'b');
+        // if (!done)
+        //     return;
         if (right != NULL)
         {
             right->yo_dec(b, H, done, pusher, intime);
@@ -660,15 +662,15 @@ public:
         Node2 *itr = this;
         while (itr != NULL)
         {
-            if (b != itr->buy && itr->mystocks->compmap(H) && itr->valid && itr->out_time >= intime)
+            if (check != itr->buy && itr->mystocks->compmap(H) && itr->valid && itr->out_time >= intime)
             {
                 done = false;
                 pusher.push_back(itr);
             }
             itr = itr->ll_next;
         }
-        if (!done)
-            return;
+        // if (!done)
+        //     return;
         if (left != NULL)
         {
             left->yo_dec(b, H, done, pusher, intime);
@@ -736,7 +738,7 @@ public:
                 {
                     bool done = 1;
                     // Res.push_back(vect[i]->yo_inc(b, H));
-                    vect[i]->yo_dec('b', x->mystocks, done, Res, x->in_time);
+                    vect[i]->yo_inc('b', x->mystocks, done, Res, x->in_time);
                 }
             }
             // cout << "dfs" << endl;

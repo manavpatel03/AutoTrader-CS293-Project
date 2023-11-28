@@ -122,6 +122,7 @@ void market::start()
             {
                 if (S->quant == min(S->quant, Dealholder[i]->quant))
                 {
+                    // if(Dealholder[i]->Broke != S->Broke) continue;
                     Dealholder[i]->quant -= S->quant;
                     S->quant = 0;
                     if (S->buy)

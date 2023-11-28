@@ -5,8 +5,8 @@ TL
 2 KarGoKrab BUY AMZN $130 #12 0
 2 KarGoTravels BUY AMD $100 #50 10
 3 KarGoCorp BUY AMZN $50 #30 5
+3 KarGoCorp SELL AMZN $50 #5 0
 3 KarGoKrab BUY AMD $130 #10 7
-4 KarGoCorp SELL AMZN $50 #5 0
 4 KarGoExpress SELL GE $150 #50 6
 5 KarGoTravels BUY AMD $150 #25 0
 5 KarGoExpress BUY NFLX $80 #15 6
@@ -19,12 +19,10 @@ TL
 @!
 Successfully Initiated!
 KarGoKrab purchased 12 share of AMZN from KarGoCorp for $100/share
-KarGoKrab purchased 10 share of AMD from KarGoTravels for $100/share
-KarGoCorp purchased 5 share of AMZN from KarGoCorp for $100/share
+KarGoCorp purchased 5 share of AMZN from KarGoCorp for $50/share
 KarGoCorp purchased 20 share of GE from KarGoExpress for $200/share
-KarGoTravels purchased 25 share of AMD from KarGoTravels for $100/share
-KarGoTravels purchased 15 share of AMD from KarGoExpress for $100/share
-KarGoCorp purchased 13 share of AMZN from KarGoTravels for $100/share
+KarGoKrab purchased 10 share of AMD from KarGoExpress for $130/share
+KarGoTravels purchased 50 share of AMD from KarGoExpress for $100/share
 KarGoCorp purchased 22 share of AMZN from KarGoTravels for $50/share
 KarGoCorp purchased 10 share of AMD from KarGoExpress for $80/share
-KarGoExpress purchased 15 share of GE from KarGoCorp for $150/share
+KarGoKrab purchased 10 share of GE from KarGoCorp for $50/share
