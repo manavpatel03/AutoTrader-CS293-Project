@@ -534,7 +534,7 @@ public:
         // diff = 0;
     }
 
-    Node2 *Newnode2(hashMap *M, int cost, int count, char buy, int in_tim, int outtime)
+    Node2 *Newnode2(hashMap *M, int cost, int count, char buy, int in_tim, int outtime, string broker)
     {
         Node2 *plc = new Node2();
         plc->left = NULL;
@@ -546,7 +546,10 @@ public:
         plc->ll_next = NULL;
         plc->valid = 1;
         plc->in_time = in_tim;
-        plc->Broke.assign("");
+        for (int i = 0; i < broker.size(); i++)
+        {
+            plc->Broke.push_back(broker[i]);
+        }
         if (outtime == -1)
         {
             plc->out_time = INT32_MAX;
@@ -561,6 +564,7 @@ public:
 
     void ins(Node2 *newroot)
     {
+        // cout << "here" << endl;
         if (newroot->price > price)
         {
             if (right == NULL)
@@ -572,8 +576,13 @@ public:
         {
             Node2 *itr = this;
             while (itr->ll_next != NULL)
+            {
+                assert(itr != itr->ll_next);
                 itr = itr->ll_next;
+                // cout << "here" << endl;
+            }
             itr->ll_next = newroot;
+            newroot->ll_next = NULL;
         }
         else
         {
@@ -698,9 +707,11 @@ public:
 
     void insert(Node2 *A)
     {
-        if (vect.size() == A->in_time)
+        // cout << A->in_time << " " << vect.size() << endl;
+        // assert(A->in_time <= vect.size());
+        if (vect.size() <= A->in_time)
         {
-            vect.push_back(A);
+            int i = vect.size();
         }
         else
             vect[A->in_time]->ins(A);
@@ -709,6 +720,7 @@ public:
 
     void Bestdeal(Node2 *x, vector<Node2 *> &Deals)
     {
+        // assert(x != NULL);
         vector<Node2 *> Res;
         if (x->buy)
         {
@@ -733,7 +745,7 @@ public:
                 // sort Res here -x-x-x-x-x-x-x-x--x-xx-x-x-
                 sortNodes(Res, 1);
                 //  int max_price = my_price;
-                Node2 *X = NULL;
+                // Node2 *X = NULL;
                 int q = x->quant;
                 for (int i = 0; i < Res.size(); i++)
                 {
@@ -745,6 +757,7 @@ public:
                             // X = Res[i];
                             if (q <= 0)
                                 return;
+                            cout << x->Broke << endl;
                             Deals.push_back(Res[i]);
                             if (q < Res[i]->quant)
                                 return;
@@ -785,6 +798,7 @@ public:
                             // X = Res[i];
                             if (q <= 0)
                                 return;
+                            cout << x->Broke << endl;
                             Deals.push_back(Res[i]);
                             if (q < Res[i]->quant)
                                 return;

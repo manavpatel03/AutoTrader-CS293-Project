@@ -108,11 +108,12 @@ void market::start()
         char mychar = 'b';
         if (!buy)
             mychar = 's';
-        S = S->Newnode2(Map_of_comp, cost, li_co_qu, mychar, init_time, expiration_t);
+        S = S->Newnode2(Map_of_comp, cost, li_co_qu, mychar, init_time, expiration_t, Broker);
         vector<Node2 *> Dealholder;
         myorders.Bestdeal(S, Dealholder);
         if (Dealholder.size() == 0)
         {
+            cout << "I am here" << endl;
             myorders.insert(S);
         }
         // else
