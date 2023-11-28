@@ -8,10 +8,11 @@
 
 using namespace std;
 
-bool srch(vector<string> &a, string b)
+bool srch(vector<string> &a, string &b)
 {
     for (int i = 0; i < a.size(); i++)
     {
+        cout << "";
         if (a[i] == b)
             return true;
     }
@@ -254,6 +255,24 @@ void market::start()
     cout << "Number of Shares Traded: " << shares_traded << endl;
     for (int i = 0; i < broker_s.size(); i++)
     {
-        cout << broker_s[i] << " bought " << qunttrade_b->search_Val(broker_s[i]) << "and sold " << qunttrade_s->search_Val(broker_s[i]) << "for a net transfer of $" << net->search_Val(broker_s[i]) << endl;
+        int *a = qunttrade_b->search_Val(broker_s[i]);
+        int *b = qunttrade_s->search_Val(broker_s[i]);
+        int *c = net->search_Val(broker_s[i]);
+        int d, e, f;
+        if (a == NULL)
+            d = 0;
+        else
+            d = *a;
+        if (b == NULL)
+            e = 0;
+        else
+            e = *b;
+        if (c == NULL)
+            f = 0;
+        else
+            f = *c;
+        cout << broker_s[i] << " bought " << d
+
+             << " and sold " << e << " for a net transfer of $" << f << endl;
     }
 }

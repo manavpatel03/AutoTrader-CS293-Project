@@ -92,7 +92,12 @@ public:
         // return 1;
     }
 
-    int *search_Val(string k) { return Bucket[hashVal(k)]->search(k); }
+    int *search_Val(string k)
+    {
+        if (Bucket[hashVal(k)] == NULL)
+            return NULL;
+        return Bucket[hashVal(k)]->search(k);
+    }
     void addtoBucket(hashMap X, Node *src)
     {
         if (src == NULL)
