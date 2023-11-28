@@ -512,7 +512,7 @@ public:
     Node2 *ll_next;
     int price;
     int quant;
-    int j;
+    int in_time;
     bool buy;
     string Broke;
     bool valid;
@@ -528,11 +528,11 @@ public:
         quant = 0;
         buy = 0;
         Broke.assign("");
-        j = 0;
+        in_time = 0;
         // diff = 0;
     }
 
-    Node2 *Newnode2(hashMap *M, int cost, int count, char buy, int jval)
+    Node2 *Newnode2(hashMap *M, int cost, int count, char buy, int in_tim)
     {
         Node2 *plc = new Node2();
         plc->left = NULL;
@@ -543,7 +543,7 @@ public:
         plc->buy = (buy == 'b');
         plc->ll_next = NULL;
         plc->valid = 1;
-        plc->j = jval;
+        plc->in_time = in_tim;
         plc->Broke.assign("");
         // plc->diff = dif;
         return plc;
@@ -604,73 +604,53 @@ public:
         return false;
     }
 
-    Node2 *yo_dec(char b, hashMap *H)
+    void yo_dec(char b, hashMap *H, bool done, vector<Node2 *> &pusher)
     {
+        if (!done)
+            return;
         if (left != NULL)
         {
-            Node2 *x = left->yo_dec(b, H);
-            if (x != NULL)
-                return x;
+            left->yo_dec(b, H, done, pusher);
         }
-        vector<Node2 *> my_node;
-        vector<string> my_strings;
         Node2 *itr = this;
         while (itr != NULL)
         {
-            if (itr->valid && itr->mystocks->compmap(H) && itr->buy != b)
+            if (b != itr->buy && itr->mystocks->compmap(H) && itr->valid)
             {
-                my_node.push_back(itr);
-                my_strings.push_back(itr->Broke);
+                done = false;
+                pusher.push_back(itr);
             }
-            itr = itr->ll_next;
         }
-        if (my_node.size() == 0)
-        {
-            if (right != NULL)
-                return right->yo_dec(b, H);
-            else
-                return NULL;
-        }
-        else
-        {
-            int ret = min(my_strings);
-            return my_node[ret];
-        }
-
-        // v.push_back(this);
-    }
-
-    Node2 *yo_inc(char b, hashMap *H)
-    {
+        if (!done)
+            return;
         if (right != NULL)
         {
-            Node2 *x = right->yo_dec(b, H);
-            if (x != NULL)
-                return x;
+            right->yo_dec(b, H, done, pusher);
         }
-        vector<Node2 *> my_node;
-        vector<string> my_strings;
+    }
+
+    void yo_inc(char b, hashMap *H, bool done, vector<Node2 *> &pusher)
+    {
+        if (!done)
+            return;
+        if (right != NULL)
+        {
+            right->yo_dec(b, H, done, pusher);
+        }
         Node2 *itr = this;
         while (itr != NULL)
         {
-            if (itr->valid && itr->mystocks->compmap(H) && itr->buy != b)
+            if (b != itr->buy && itr->mystocks->compmap(H) && itr->valid)
             {
-                my_node.push_back(itr);
-                my_strings.push_back(itr->Broke);
+                done = false;
+                pusher.push_back(itr);
             }
-            itr = itr->ll_next;
         }
-        if (my_node.size() == 0)
+        if (!done)
+            return;
+        if (left != NULL)
         {
-            if (left != NULL)
-                return left->yo_dec(b, H);
-            else
-                return NULL;
-        }
-        else
-        {
-            int ret = min(my_strings);
-            return my_node[ret];
+            left->yo_dec(b, H, done, pusher);
         }
     }
 
@@ -712,14 +692,19 @@ public:
             {
                 if (vect[i] != NULL)
                 {
-                    Res.push_back(vect[i]->yo_inc(b, H));
+                    bool done = 1;
+                    // Res.push_back(vect[i]->yo_inc(b, H));
+                    vect[i]->yo_inc('b', H, done, Res);
                 }
             }
+
             if (Res.size() == 0)
                 return;
             else
             {
-                // int max_price = my_price;
+                // sort Res here -x-x-x-x-x-x-x-x--x-xx-x-x-
+                sortNodes(Res, 1);
+                //  int max_price = my_price;
                 Node2 *X = NULL;
                 for (int i = 0; i < Res.size(); i++)
                 {
@@ -748,13 +733,16 @@ public:
             {
                 if (vect[i] != NULL)
                 {
-                    Res.push_back(vect[i]->yo_dec(b, H));
+                    bool done = 1;
+                    // Res.push_back(vect[i]->yo_inc(b, H));
+                    vect[i]->yo_inc('b', H, done, Res);
                 }
             }
             if (Res.size() == 0)
                 return;
             else
             {
+                sortNodes(Res, 0);
                 // int max_price = my_price;
                 Node2 *X = NULL;
                 for (int i = 0; i < Res.size(); i++)
@@ -789,4 +777,113 @@ int min(vector<string> &S)
             min = i;
     }
     return min;
+}
+
+int compareNodess(const Node2 *a, const Node2 *b)
+{
+    // Sort by price (decreasing)
+    if (a->price != b->price)
+    {
+        return a->price < b->price ? -1 : 1;
+    }
+
+    // If prices are equal, sort by in_time (increasing)
+    if (a->in_time != b->in_time)
+    {
+        return a->in_time < b->in_time ? -1 : 1;
+    }
+
+    // If in_time is also equal, sort alphabetically by Broke
+    return a->Broke.compare(b->Broke);
+}
+
+int compareNodesb(const Node2 *a, const Node2 *b)
+{
+    // Sort by price (decreasing)
+    if (a->price != b->price)
+    {
+        return a->price > b->price ? -1 : 1;
+    }
+
+    // If prices are equal, sort by in_time (increasing)
+    if (a->in_time != b->in_time)
+    {
+        return a->in_time < b->in_time ? -1 : 1;
+    }
+
+    // If in_time is also equal, sort alphabetically by Broke
+    return a->Broke.compare(b->Broke);
+}
+
+// Quicksort partition function
+int partition(std::vector<Node2 *> &nodes, int low, int high)
+{
+    Node2 *pivot = nodes[high];
+    int i = low - 1;
+
+    for (int j = low; j <= high - 1; j++)
+    {
+        if (compareNodesb(nodes[j], pivot) == -1)
+        {
+            i++;
+            std::swap(nodes[i], nodes[j]);
+        }
+    }
+
+    std::swap(nodes[i + 1], nodes[high]);
+    return i + 1;
+}
+
+int partition2(std::vector<Node2 *> &nodes, int low, int high)
+{
+    Node2 *pivot = nodes[high];
+    int i = low - 1;
+
+    for (int j = low; j <= high - 1; j++)
+    {
+        if (compareNodess(nodes[j], pivot) == -1)
+        {
+            i++;
+            std::swap(nodes[i], nodes[j]);
+        }
+    }
+
+    std::swap(nodes[i + 1], nodes[high]);
+    return i + 1;
+}
+
+// Quicksort function
+void quicksort(std::vector<Node2 *> &nodes, int low, int high)
+{
+    if (low < high)
+    {
+        int pi = partition(nodes, low, high);
+
+        quicksort(nodes, low, pi - 1);
+        quicksort(nodes, pi + 1, high);
+    }
+}
+
+void quicksort2(std::vector<Node2 *> &nodes, int low, int high)
+{
+    if (low < high)
+    {
+        int pi = partition2(nodes, low, high);
+
+        quicksort2(nodes, low, pi - 1);
+        quicksort2(nodes, pi + 1, high);
+    }
+}
+
+// Function to sort vector of Node2*
+void sortNodes(std::vector<Node2 *> &nodes, bool b)
+{
+    if (b)
+    {
+        quicksort(nodes, 0, nodes.size() - 1);
+    }
+    else
+    {
+        quicksort2(nodes, 0, nodes.size() - 1);
+    }
 }
