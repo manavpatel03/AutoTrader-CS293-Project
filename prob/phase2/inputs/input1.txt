@@ -1,4 +1,4 @@
-KarGoExpress SELL AMD 1 AMX 2 $120 #32 1
+KarGoExpress SELL AMD $120 #32 1
 KarGoCorp BUY GE $200 #20 8
 KarGoTravels BUY AMD $100 #50 10
 KarGoKrab BUY AMD $130 #10 7

@@ -513,6 +513,7 @@ public:
     int price;
     int quant;
     int in_time;
+    int out_time;
     bool buy;
     string Broke;
     bool valid;
@@ -529,10 +530,11 @@ public:
         buy = 0;
         Broke.assign("");
         in_time = 0;
+        out_time = 0;
         // diff = 0;
     }
 
-    Node2 *Newnode2(hashMap *M, int cost, int count, char buy, int in_tim)
+    Node2 *Newnode2(hashMap *M, int cost, int count, char buy, int in_tim, int outtime)
     {
         Node2 *plc = new Node2();
         plc->left = NULL;
@@ -545,6 +547,14 @@ public:
         plc->valid = 1;
         plc->in_time = in_tim;
         plc->Broke.assign("");
+        if (outtime == -1)
+        {
+            plc->out_time = INT32_MAX;
+        }
+        else
+        {
+            plc->out_time = in_tim + outtime;
+        }
         // plc->diff = dif;
         return plc;
     }
@@ -558,10 +568,10 @@ public:
             else
                 right->ins(newroot);
         }
-        if (newroot->price == price)
+        else if (newroot->price == price)
         {
-            Node2 *itr = ll_next;
-            while (itr != NULL)
+            Node2 *itr = this;
+            while (itr->ll_next != NULL)
                 itr = itr->ll_next;
             itr->ll_next = newroot;
         }
@@ -604,54 +614,57 @@ public:
         return false;
     }
 
-    void yo_dec(char b, hashMap *H, bool done, vector<Node2 *> &pusher)
+    void yo_dec(char b, hashMap *H, bool done, vector<Node2 *> &pusher, int intime)
     {
         if (!done)
             return;
         if (left != NULL)
         {
-            left->yo_dec(b, H, done, pusher);
+            left->yo_dec(b, H, done, pusher, intime);
         }
         Node2 *itr = this;
         while (itr != NULL)
         {
-            if (b != itr->buy && itr->mystocks->compmap(H) && itr->valid)
+            if (b != itr->buy && itr->mystocks->compmap(H) && itr->valid && itr->out_time >= intime)
             {
                 done = false;
                 pusher.push_back(itr);
             }
+            itr = itr->ll_next;
         }
         if (!done)
             return;
         if (right != NULL)
         {
-            right->yo_dec(b, H, done, pusher);
+            right->yo_dec(b, H, done, pusher, intime);
         }
     }
 
-    void yo_inc(char b, hashMap *H, bool done, vector<Node2 *> &pusher)
+    void yo_inc(char b, hashMap *H, bool done, vector<Node2 *> &pusher, int intime)
     {
         if (!done)
             return;
         if (right != NULL)
         {
-            right->yo_dec(b, H, done, pusher);
+            right->yo_dec(b, H, done, pusher, intime);
         }
         Node2 *itr = this;
         while (itr != NULL)
         {
-            if (b != itr->buy && itr->mystocks->compmap(H) && itr->valid)
+            if (b != itr->buy && itr->mystocks->compmap(H) && itr->valid && itr->out_time >= intime)
             {
                 done = false;
                 pusher.push_back(itr);
             }
+            itr = itr->ll_next;
         }
         if (!done)
             return;
         if (left != NULL)
         {
-            left->yo_dec(b, H, done, pusher);
+            left->yo_dec(b, H, done, pusher, intime);
         }
+        return;
     }
 
     // Node2 *dsrch(int cost, hashMap *H, char b)
@@ -683,10 +696,21 @@ public:
         vect.resize(0);
     }
 
-    void Bestdeal(Node2 *x, bool b, int my_price, hashMap *H, vector<Node2 *> &Deals, int q)
+    void insert(Node2 *A)
+    {
+        if (vect.size() == A->in_time)
+        {
+            vect.push_back(A);
+        }
+        else
+            vect[A->in_time]->ins(A);
+        return;
+    }
+
+    void Bestdeal(Node2 *x, vector<Node2 *> &Deals)
     {
         vector<Node2 *> Res;
-        if (b)
+        if (x->buy)
         {
             for (int i = 0; i < vect.size(); i++)
             {
@@ -694,23 +718,28 @@ public:
                 {
                     bool done = 1;
                     // Res.push_back(vect[i]->yo_inc(b, H));
-                    vect[i]->yo_inc('b', H, done, Res);
+                    vect[i]->yo_dec('b', x->mystocks, done, Res, x->in_time);
                 }
             }
+            // cout << "dfs" << endl;
 
             if (Res.size() == 0)
+            {
                 return;
+            }
             else
             {
+                // cout << "grfs" << endl;
                 // sort Res here -x-x-x-x-x-x-x-x--x-xx-x-x-
                 sortNodes(Res, 1);
                 //  int max_price = my_price;
                 Node2 *X = NULL;
+                int q = x->quant;
                 for (int i = 0; i < Res.size(); i++)
                 {
                     if (Res[i] != NULL)
                     {
-                        if (Res[i]->price > my_price)
+                        if (Res[i]->price <= x->price)
                         {
                             // max_price = Res[i]->price;
                             // X = Res[i];
@@ -727,7 +756,7 @@ public:
             }
         }
 
-        if (!b)
+        if (!x->buy)
         {
             for (int i = 0; i < vect.size(); i++)
             {
@@ -735,7 +764,7 @@ public:
                 {
                     bool done = 1;
                     // Res.push_back(vect[i]->yo_inc(b, H));
-                    vect[i]->yo_inc('b', H, done, Res);
+                    vect[i]->yo_dec('b', x->mystocks, done, Res, x->in_time);
                 }
             }
             if (Res.size() == 0)
@@ -745,11 +774,12 @@ public:
                 sortNodes(Res, 0);
                 // int max_price = my_price;
                 Node2 *X = NULL;
+                int q = x->quant;
                 for (int i = 0; i < Res.size(); i++)
                 {
                     if (Res[i] != NULL)
                     {
-                        if (Res[i]->price > my_price)
+                        if (Res[i]->price >= x->price)
                         {
                             // max_price = Res[i]->price;
                             // X = Res[i];
@@ -813,11 +843,17 @@ public:
             if (compareNodesb(nodes[j], pivot) == -1)
             {
                 i++;
-                std::swap(nodes[i], nodes[j]);
+                Node2 *A = nodes[i];
+                nodes[i] = nodes[j];
+                nodes[j] = A;
+                // std::swap(nodes[i], nodes[j]);
             }
         }
 
-        std::swap(nodes[i + 1], nodes[high]);
+        Node2 *A = nodes[i + 1];
+        nodes[i + 1] = nodes[high];
+        nodes[high] = A;
+        // std::swap(nodes[i + 1], nodes[high]);
         return i + 1;
     }
 
@@ -831,11 +867,17 @@ public:
             if (compareNodess(nodes[j], pivot) == -1)
             {
                 i++;
-                std::swap(nodes[i], nodes[j]);
+                // std::swap(nodes[i], nodes[j]);
+                Node2 *A = nodes[i];
+                nodes[i] = nodes[j];
+                nodes[j] = A;
             }
         }
 
-        std::swap(nodes[i + 1], nodes[high]);
+        // std::swap(nodes[i + 1], nodes[high]);
+        Node2 *A = nodes[i + 1];
+        nodes[i + 1] = nodes[high];
+        nodes[high] = A;
         return i + 1;
     }
 
@@ -865,7 +907,7 @@ public:
     // Function to sort vector of Node2*
     void sortNodes(std::vector<Node2 *> &nodes, bool b)
     {
-        if (b)
+        if (!b)
         {
             quicksort(nodes, 0, nodes.size() - 1);
         }
